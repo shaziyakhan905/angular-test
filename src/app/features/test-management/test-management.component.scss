@@ -1,0 +1,45 @@
+.test-management-container {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.table th, .table td {
+  vertical-align: middle;
+}
+
+.btn-info {
+  background-color: #17a2b8;
+  border: none;
+}
+
+.btn-warning {
+  background-color: #ffc107;
+  border: none;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border: none;
+}
+
+.table td, .table th {
+  vertical-align: middle;
+}
+
+.card-header {
+  font-weight: bold;
+}
+
+button i {
+  pointer-events: none;
+}
+.custom-create-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+
+  &:hover {
+    background-color: #45a049;
+  }
+}

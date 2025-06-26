@@ -1,0 +1,58 @@
+<div class="sidebar p-3 border-end h-100 d-flex flex-column">
+  <!-- Sidebar Header -->
+  <div class="sidebar-header d-flex align-items-center gap-2 mb-4">
+    <i class="bi bi-lightbulb-fill fs-4 text-primary"></i>
+    <h5 class="mb-0 fw-bold text-dark">Test Platform</h5>
+  </div>
+
+  <!-- Toggle Menu for Admins -->
+   <ng-container *ngIf="isAuthenticated$ | async">
+     <div class="d-flex gap-2 mb-3" *ngIf="isAdmin">
+       <div>
+         <button
+           class="menu-btn w-100 text-start"
+           [class.active]="menuTab === 'userMenu'"
+           (click)="changeSideMenu('userMenu')">
+           <i class="bi bi-list"></i> Tests
+         </button>
+       </div>
+   
+       <div>
+         <button
+           class="menu-btn w-100 text-start"
+           [class.active]="menuTab === 'adminMenu'"
+           (click)="changeSideMenu('adminMenu')">
+           <i class="bi bi-shield-lock"></i> Admin
+         </button>
+       </div>
+     </div>
+    </ng-container>
+
+  <div class="flex-grow-1 overflow-auto">
+    <!-- User Menu -->
+    <ul class="nav flex-column" *ngIf="menuTab === 'userMenu'">
+      <li class="nav-item mb-2" *ngFor="let cat of categories">
+        <a class="nav-link d-flex align-items-center gap-2 sidebar-link"
+          (click)="goToCategory(cat._id)">
+          <img [src]="getCategoryDetails(cat.name).url" width="20" height="20"
+            [style.filter]="'drop-shadow(0 0 2px ' + getCategoryDetails(cat.name).color + ')'" />
+          <span class="text-capitalize fw-medium"
+            [style.color]="getCategoryDetails(cat.name).color">{{ cat.name
+            }}</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- Admin Menu -->
+
+    <ul class="nav flex-column" *ngIf="menuTab === 'adminMenu'">
+      <li class="nav-item mb-2" *ngFor="let item of adminMenuItems">
+        <a class="nav-link d-flex align-items-center gap-2 sidebar-link"
+          (click)="item.action()">
+          <i class="bi" [ngClass]="item.icon"></i>
+          <span>{{ item.label }}</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

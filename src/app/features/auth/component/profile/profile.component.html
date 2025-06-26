@@ -1,0 +1,133 @@
+<div class="container mt-4">
+  <div class="card shadow-lg rounded-4 p-4 border-0">
+    <!-- Header with Profile and Edit Button -->
+    <div class="d-flex align-items-center justify-content-between flex-wrap mb-4">
+      <div class="d-flex align-items-center flex-wrap gap-3">
+     <div class="position-relative d-inline-block">
+  <img [src]="profileImageUrl" alt="Profile" class="rounded-circle border shadow" width="100" height="100">
+
+  <!-- Upload icon positioned over image -->
+  <label class="upload-icon">
+    <i class="bi bi-camera-fill"></i>
+    <input type="file" (change)="onImageSelected($event)" hidden>
+  </label>
+</div>
+        <div>
+          <h3 class="mb-1 text-capitalize fw-semibold">{{ userProfile?.firstName }} {{ userProfile?.lastName }}</h3>
+          <p class="mb-1 text-muted"><i class="bi bi-envelope me-2"></i>{{ userProfile?.emailId }}</p>
+          <p class="mb-0 text-muted"><i class="bi bi-telephone me-2"></i>+91 {{ userProfile?.mobileNo }}</p>
+        </div>
+      </div>
+      <button class="btn btn-outline-primary mt-3 mt-md-0" (click)="toggleEdit()">
+        {{ isEditMode ? '❌ Cancel' : '✏️ Edit Profile' }}
+      </button>
+    </div>
+
+    <!-- Edit Mode -->
+    <form *ngIf="isEditMode" [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+      <h5 class="mb-3 fw-semibold">Personal Information</h5>
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label>First Name</label>
+          <input class="form-control" formControlName="firstName">
+        </div>
+        <div class="col-md-4">
+          <label>Last Name</label>
+          <input class="form-control" formControlName="lastName">
+        </div>
+        <div class="col-md-4">
+          <label>Mobile No</label>
+          <input class="form-control" formControlName="mobileNo">
+        </div>
+      </div>
+
+      <h5 class="fw-semibold mb-3">Address Details</h5>
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label>Country</label>
+          <select class="form-select" formControlName="country" (change)="onCountryChange()">
+            <option value="">Select Country</option>
+            <option *ngFor="let country of countries" [value]="country._id">{{ country.name }}</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label>State</label>
+          <select class="form-select" formControlName="state" (change)="onStateChange()" [disabled]="!states.length">
+            <option value="">Select State</option>
+            <option *ngFor="let state of states" [value]="state._id">{{ state.name }}</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label>City</label>
+          <select class="form-select" formControlName="city" [disabled]="!cities.length">
+            <option value="">Select City</option>
+            <option *ngFor="let city of cities" [value]="city._id">{{ city.name }}</option>
+          </select>
+        </div>
+      </div>
+
+      <h5 class="fw-semibold mb-3">Skills <small class="text-muted">(Minimum 3 required)</small></h5>
+      <div formArrayName="skills">
+        <div *ngFor="let skill of skills.controls; let i = index" [formGroupName]="i" class="border rounded-3 p-3 mb-3 bg-light">
+          <div class="row g-3 align-items-end">
+            <div class="col-md-4">
+              <label>Skill Name</label>
+              <input class="form-control" formControlName="name">
+            </div>
+            <div class="col-md-3">
+              <label>Experience (Years)</label>
+              <input type="number" min="0" class="form-control" formControlName="experience">
+            </div>
+            <div class="col-md-3">
+              <label>Level</label>
+              <select class="form-select" formControlName="level">
+                <option value="">Select</option>
+                <option>Beginner</option>
+                <option>Intermediate</option>
+                <option>Advanced</option>
+              </select>
+            </div>
+            <div class="col-md-2 text-end">
+              <button *ngIf="i > 2" class="btn btn-danger btn-sm mt-2" (click)="removeSkill(i)" type="button">
+                🗑️ Remove
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-outline-secondary btn-sm mb-3" type="button" (click)="addSkill()">➕ Add Skill</button>
+
+      <div class="text-end">
+        <button class="btn btn-success" type="submit">💾 Save Changes</button>
+      </div>
+    </form>
+
+    <!-- View Mode -->
+    <!-- View Mode -->
+<div *ngIf="!isEditMode" class="mt-4">
+  <h5 class="fw-semibold mb-3">📍 Address</h5>
+  <div class="row mb-4">
+    <div class="col-md-4"><strong>Country:</strong> {{ userProfile?.country?.name || 'N/A' }}</div>
+    <div class="col-md-4"><strong>State:</strong> {{ userProfile?.state?.name || 'N/A' }}</div>
+    <div class="col-md-4"><strong>City:</strong> {{ userProfile?.city?.name || 'N/A' }}</div>
+  </div>
+
+  <h5 class="fw-semibold mb-3">💼 Skills</h5>
+  <div *ngIf="userProfile?.skills?.length; else noSkills">
+    <div class="d-flex flex-wrap gap-2">
+      <div *ngFor="let skill of userProfile.skills" class="badge bg-light text-dark border shadow-sm p-2">
+        <strong>{{ skill.name }}</strong>
+        <span class="badge bg-primary ms-2">{{ skill.level }}</span>
+        <small class="text-muted ms-2">({{ skill.experience }} yrs)</small>
+      </div>
+    </div>
+  </div>
+  <ng-template #noSkills>
+    <p class="text-muted">No skills added yet.</p>
+  </ng-template>
+</div>
+
+
+  </div>
+</div>

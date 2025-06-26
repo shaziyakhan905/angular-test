@@ -1,0 +1,91 @@
+<div class="card shadow-sm rounded-3">
+
+  <!-- Header -->
+  <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <h5 class="mb-0">Category Management</h5>
+    <button class="btn btn-sm btn-light text-primary fw-semibold" (click)="openModal('create')">
+      <i class="bi bi-plus-circle"></i> Create Category
+    </button>
+  </div>
+
+  <!-- Table -->
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover text-center align-middle mt-3">
+      <thead class="table-light">
+        <tr>
+          <th style="width: 60px;">S.No</th>
+          <th>Category Name</th>
+          <th style="width: 160px;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let category of paginatedCategories(); let i = index">
+          <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+          <td>{{ category.name }}</td>
+          <td>
+            <button class="btn btn-sm btn-info me-1" (click)="openModal('view', category)">
+              <i class="bi bi-eye"></i>
+            </button>
+            <button class="btn btn-sm btn-warning me-1" (click)="openModal('edit', category)">
+              <i class="bi bi-pencil-square"></i>
+            </button>
+            <!-- <button class="btn btn-sm btn-danger" (click)="deleteCategory(category._id)">
+              <i class="bi bi-trash"></i>
+            </button> -->
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="d-flex justify-content-center mt-3" *ngIf="categories.length > pageSize">
+    <ul class="pagination">
+      <li class="page-item" [class.disabled]="currentPage === 1">
+        <button class="page-link" (click)="changePage(currentPage - 1)">«</button>
+      </li>
+      <li
+        class="page-item"
+        *ngFor="let page of totalPagesArray()"
+        [class.active]="page === currentPage">
+        <button class="page-link" (click)="changePage(page)">{{ page }}</button>
+      </li>
+      <li class="page-item" [class.disabled]="currentPage == totalPages">
+        <button class="page-link" (click)="changePage(currentPage + 1)">»</button>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- ng-bootstrap Modal Template -->
+<ng-template #categoryModal let-modal>
+  <div class="modal-header" [ngClass]="modalMode === 'view' ? 'bg-info text-white' : 'bg-primary text-white'">
+    <h5 class="modal-title">
+      {{ modalMode === 'create' ? 'Create Category' : modalMode === 'edit' ? 'Edit Category' : 'View Category' }}
+    </h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+
+  <div class="modal-body">
+    <form [formGroup]="categoryForm">
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Category Name</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="name"
+          [readonly]="modalMode === 'view'"
+          [ngClass]="{ 'is-invalid': categoryForm.get('name')?.invalid && categoryForm.get('name')?.touched }"
+        />
+        <div class="invalid-feedback" *ngIf="categoryForm.get('name')?.invalid && categoryForm.get('name')?.touched">
+          Category name is required.
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-footer" *ngIf="modalMode !== 'view'">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
+    <button type="button" class="btn btn-primary" (click)="submitCategory(modal)">Save</button>
+  </div>
+</ng-template>

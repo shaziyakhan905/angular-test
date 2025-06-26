@@ -1,0 +1,90 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-7 col-lg-6">
+      <div class="card shadow-lg rounded-4 p-4">
+        
+        <h3 class="text-center mb-4 text-primary">📝 Create Your Account</h3>
+
+        <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">First Name</label>
+              <input type="text" class="form-control" formControlName="firstName" placeholder="Enter first name">
+              <div class="text-danger small" *ngIf="registrationForm.get('firstName')?.touched && registrationForm.get('firstName')?.invalid">
+                First name is required.
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Last Name</label>
+              <input type="text" class="form-control" formControlName="lastName" placeholder="Enter last name">
+              <div class="text-danger small" *ngIf="registrationForm.get('lastName')?.touched && registrationForm.get('lastName')?.invalid">
+                Last name is required.
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" formControlName="emailId" placeholder="Enter email">
+            <div class="text-danger small" *ngIf="registrationForm.get('emailId')?.touched && registrationForm.get('emailId')?.invalid">
+              Valid email is required.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Mobile Number</label>
+            <input type="text" class="form-control" formControlName="mobileNo" placeholder="Enter 10-digit mobile number">
+            <div class="text-danger small" *ngIf="registrationForm.get('mobileNo')?.touched && registrationForm.get('mobileNo')?.invalid">
+              Enter a valid 10-digit mobile number.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-control" formControlName="password" placeholder="Enter password">
+            <div class="text-danger small" *ngIf="registrationForm.get('password')?.touched && registrationForm.get('password')?.invalid">
+              Password must be at least 4 characters.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Country</label>
+            <select class="form-select" formControlName="countryId" (change)="onCountryChange($event)">
+              <option value="">Select Country</option>
+              <option *ngFor="let country of countries" [value]="country._id">{{ country.name }}</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">State</label>
+            <select class="form-select" formControlName="stateId" (change)="onStateChange($event)">
+              <option value="">Select State</option>
+              <option *ngFor="let state of states" [value]="state._id">{{ state.name }}</option>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label">City</label>
+            <select class="form-select" formControlName="cityId">
+              <option value="">Select City</option>
+              <option *ngFor="let city of cities" [value]="city._id">{{ city.name }}</option>
+            </select>
+          </div>
+
+          <div *ngIf="errorMessage" class="alert alert-danger">
+            {{ errorMessage }}
+          </div>
+
+          <button class="btn btn-primary w-100 rounded-pill" type="submit">Register</button>
+
+          <p class="text-center mt-3">
+            Already have an account?
+            <a routerLink="/auth/login" class="text-decoration-none">Login here</a>
+          </p>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="container py-4">
+  <ng-container *ngIf="tests.length > 0; else noTests">
+
+    <!-- 🏷️ Category Header -->
+    <div class="mb-4">
+      <span class="badge rounded-pill bg-primary fs-6 px-3 py-2 shadow-sm">
+        📂 {{ tests[0]?.category?.name || 'Category' }} Tests
+      </span>
+    </div>
+
+    <!-- 🧪 List View Style -->
+    <div class="d-flex flex-column gap-3">
+      <div *ngFor="let test of tests" class="card shadow-sm px-3 py-3 d-flex flex-row justify-content-between align-items-center flex-wrap">
+        
+        <!-- Left Content -->
+        <div class="flex-grow-1 pe-3">
+          <h5 class="mb-1">{{ test.title }}</h5>
+          <p class="mb-0 text-muted">
+            <i class="bi bi-tags-fill me-1 text-secondary"></i>
+            <strong>Category:</strong> {{ test.category?.name || 'N/A' }}
+          </p>
+        </div>
+
+        <!-- Right Button -->
+        <div>
+          <button class="btn btn-primary" (click)="goToTest(test._id)">
+            Take Test
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
+
+  <!-- 🛑 No Tests Fallback -->
+  <ng-template #noTests>
+    <div class="alert alert-warning text-center mt-5">
+      No tests found for this category.
+    </div>
+  </ng-template>
+</div>

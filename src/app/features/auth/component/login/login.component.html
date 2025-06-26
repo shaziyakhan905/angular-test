@@ -1,0 +1,52 @@
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="card shadow p-4" style="width: 400px;">
+    <h3 class="text-center mb-4">🔐 Login to Your Account</h3>
+
+    <form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
+      <!-- Email -->
+      <div class="mb-3">
+        <label>Email</label>
+        <input
+          type="email"
+          class="form-control"
+          formControlName="emailId"
+          placeholder="Enter your email"
+        />
+        <div class="text-danger mt-1" *ngIf="f['emailId'].touched && f['emailId'].invalid">
+          <small *ngIf="f['emailId'].errors?.['required']">Email is required.</small>
+          <small *ngIf="f['emailId'].errors?.['emailId']">Enter a valid email.</small>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <label>Password</label>
+        <input
+          type="password"
+          class="form-control"
+          formControlName="password"
+          placeholder="Enter your password"
+        />
+        <div class="text-danger mt-1" *ngIf="f['password'].touched && f['password'].invalid">
+          <small *ngIf="f['password'].errors?.['required']">Password is required.</small>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-primary w-100 mt-2">Login</button>
+    </form>
+
+    <!-- Error Alert -->
+    <div *ngIf="errorMessage" class="alert alert-danger mt-3" role="alert">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Create Account Link -->
+    <div class="text-center mt-3">
+      <small>
+        Don't have an account?
+        <a routerLink="/auth/register" class="text-decoration-none">Create one</a>
+      </small>
+    </div>
+  </div>
+</div>

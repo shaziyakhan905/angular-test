@@ -1,0 +1,61 @@
+<div class="card shadow-sm rounded-3">
+  
+  <!-- Header -->
+ <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <h5 class="mb-0">Test Management</h5>
+     
+    <button class="btn btn-sm custom-create-btn" (click)="goToCreateTest()">
+      <i class="bi bi-plus-circle"></i> Create Test
+    </button>
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="loading" class="text-center my-4">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+
+  <!-- Table -->
+  <div *ngIf="!loading && tests.length > 0" class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead class="table-light">
+        <tr>
+          <th>SNo</th>
+          <th>Title</th>
+          <th>Category</th>
+          <th>Total Questions</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let test of tests | paginate: { itemsPerPage: limit, currentPage: page }; let i = index">
+          <td>{{ (page - 1) * limit + i + 1 }}</td>
+          <td>{{ test.title }}</td>
+          <td>{{ test.category }}</td>
+          <td>{{ test.questions?.length }}</td>
+          <td>
+            <button class="btn btn-sm btn-info me-1" (click)="viewTest(test._id)">
+              <i class="bi bi-eye"></i>
+            </button>
+            <button class="btn btn-sm btn-warning me-1" (click)="updateTest(test._id)">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn btn-sm btn-danger" (click)="deleteTest(test._id)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- No Data Message -->
+  <div *ngIf="!loading && tests.length === 0" class="alert alert-info text-center">
+    No tests available.
+  </div>
+
+  <!-- Pagination Controls -->
+  <div class="d-flex justify-content-center mt-3" *ngIf="tests.length > limit">
+    <pagination-controls (pageChange)="page = $event"></pagination-controls>
+  </div>
+
+</div>

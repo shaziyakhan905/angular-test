@@ -1,0 +1,71 @@
+.result-container {
+  border-radius: 12px;
+  padding: 2rem;
+  animation: fadeIn 0.5s ease-in;
+
+  &.pass {
+    background: linear-gradient(135deg, #e0ffe0, #d0f0ff);
+  }
+
+  &.fail {
+    background: linear-gradient(135deg, #ffe0e0, #fff0f0);
+  }
+}
+
+.icon-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.hurray-text {
+  font-size: 1.8rem;
+  color: #28a745;
+  font-weight: bold;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+button {
+  transition: all 0.3s ease;
+  &:hover {
+    transform: scale(1.05);
+    background-color: #007bff;
+    color: #fff;
+  }
+}
+.fail-animation-container {
+  background: #fff0f0;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 0 12px rgba(255, 0, 0, 0.1);
+  transition: 0.3s ease-in-out;
+}
+
+.fail-animation-container {
+  background-color: #fff0f0;
+  padding: 40px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(255, 0, 0, 0.1);
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.fail-animation-container:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(255, 0, 0, 0.2);
+}
+
+.btn-outline-danger {
+  font-weight: 500;
+  border-radius: 8px;
+}
+

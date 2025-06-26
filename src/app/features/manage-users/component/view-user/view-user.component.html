@@ -1,0 +1,65 @@
+<div class="container mt-4">
+  <div class="card shadow-lg">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <h5 class="mb-0"><i class="bi bi-person-circle me-2"></i> User Details</h5>
+      <button class="btn btn-outline-light btn-sm" routerLink="/manage-users">
+        <i class="bi bi-arrow-left"></i> Back
+      </button>
+    </div>
+
+    <div class="card-body" *ngIf="user">
+      <div class="row">
+        
+        <!-- Profile Section -->
+        <div class="col-md-3 text-center mb-3">
+           <img [src]="userProfile.profileImage?.dataUrl" alt="Profile" class="rounded-circle border shadow user-profile-img" width="40" height="40" role="button">
+          <h5 class="fw-bold mb-1 text-capitalize">{{ user.firstName }} {{ user.lastName }}</h5>
+          <span class="badge bg-success">Active</span>
+         
+         
+        </div>
+
+        <!-- Details Section -->
+        <div class="col-md-9">
+          <div class="row mb-3">
+            <div class="col-sm-6 mb-2">
+              <label class="fw-semibold">Email:</label>
+              <div>{{ user.emailId }}</div>
+            </div>
+            <div class="col-sm-6 mb-2">
+              <label class="fw-semibold">Mobile No:</label>
+              <div>{{ user.mobileNo }}</div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-sm-4 mb-2">
+              <label class="fw-semibold">Country:</label>
+              <div>{{ user.country?.name }}</div>
+            </div>
+            <div class="col-sm-4 mb-2">
+              <label class="fw-semibold">State:</label>
+              <div>{{ user.state?.name }}</div>
+            </div>
+            <div class="col-sm-4 mb-2">
+              <label class="fw-semibold">City:</label>
+              <div>{{ user.city?.name }}</div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6 mb-2">
+              <label class="fw-semibold">Created At:</label>
+              <div>{{ user.createdAt | date: 'medium' }}</div>
+            </div>
+            <div class="col-sm-6 mb-2">
+              <label class="fw-semibold">Updated At:</label>
+              <div>{{ user.updatedAt | date: 'medium' }}</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

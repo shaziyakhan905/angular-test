@@ -1,0 +1,25 @@
+<nav class="navbar navbar-dark bg-dark px-4 justify-content-between">
+  <span class="navbar-brand" routerLink="/home">🧠 TestApp</span>
+  <div *ngIf="isAuthenticated$ | async; else loggedOut">
+    <div class="position-relative">
+      <ng-container *ngIf="userProfile?.profileImage?.dataUrl else noImage">
+        <img [src]="userProfile.profileImage?.dataUrl" alt="Profile" class="rounded-circle" width="40" height="40" role="button" (click)="toggleDropdown()">
+      </ng-container>
+      <ng-template #noImage>
+        <img [src]="profileImageUrl" alt="Profile" class="rounded-circle" width="40" height="40" role="button" (click)="toggleDropdown()">
+      </ng-template>
+      <ul class="dropdown-menu dropdown-menu-end mt-2 show" *ngIf="showDropdown" style="position: absolute; right: 0;">
+        <li><a class="dropdown-item" (click)="navigateToProfile()">👤 View Profile</a></li>
+        <li><a class="dropdown-item">🔑 Change Password</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><button class="dropdown-item text-danger" (click)="logout()">🚪 Logout</button></li>
+      </ul>
+    </div>
+  </div>
+
+  <ng-template #loggedOut>
+    <button class="btn btn-primary d-flex align-items-center gap-2" routerLink="/auth/login">
+      <i class="bi bi-person-circle"></i> Login / Sign Up
+    </button>
+  </ng-template>
+</nav>

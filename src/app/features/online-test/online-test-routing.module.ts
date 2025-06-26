@@ -1,0 +1,29 @@
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { OnlineTestComponent } from './online-test.component';
+import { TestListComponent } from './component/test-list/test-list.component';
+import { TestPageComponent } from './component/test-page/test-page.component';
+import { TestResultComponent } from './component/test-result/test-result.component';
+import { PracticeTestsComponent } from './component/practice-tests/practice-tests.component';
+import { authGuard } from 'src/app/core/guard/auth.guard';
+import { roleGuard } from 'src/app/core/guard/role.guard';
+
+const routes: Routes = [
+  { path: '', component: OnlineTestComponent },
+  { path: "tests", component: TestListComponent },
+  {
+    path: 'test-page',
+    canActivate: [authGuard],
+    component: TestPageComponent
+  },
+  { path: 'test-result',canActivate: [authGuard,roleGuard],data: { role: 'user' }, component: TestResultComponent,
+    
+  },
+  { path: 'practice-tests',canActivate: [authGuard,roleGuard],data: { role: 'user' }, component: PracticeTestsComponent },
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class OnlineTestRoutingModule { }

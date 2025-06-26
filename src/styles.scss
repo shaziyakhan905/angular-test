@@ -1,0 +1,57 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+  background-color: #f8f9fa;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.card {
+  transition: transform 0.2s ease;
+  &:hover {
+    transform: translateY(-4px);
+  }
+}
+.nav-link {
+  border-radius: 0.25rem;
+  padding: 0.5rem 0.75rem;
+
+  &:hover {
+    background-color: #f0f0f0;
+    text-decoration: none;
+  }
+
+  &.active {
+    background-color: #e0e0e0;
+    font-weight: bold;
+  }
+}
+
+/* Default text & icon color */
+.sidebar-link .icon-color,
+.sidebar-link .text-color {
+  color: #495057; // Bootstrap gray
+  transition: color 0.3s ease;
+}
+
+/* Hover effect */
+.sidebar-link:hover .icon-color,
+.sidebar-link:hover .text-color {
+  color: #0d6efd; // Bootstrap primary
+}
+
+/* Active route style */
+.active-link {
+  background-color: #e7f1ff;
+  border-radius: 8px;
+}
+
+.active-link .icon-color,
+.active-link .text-color {
+  color: #0d6efd !important;
+  font-weight: 600;
+}
+
+
+
+
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';

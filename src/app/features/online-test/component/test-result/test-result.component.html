@@ -1,0 +1,34 @@
+<div class="container text-center py-5 result-container" [ngClass]="status">
+  <!-- 🎉 PASS UI -->
+  <div *ngIf="status === 'pass'; else failTemplate">
+    <div class="icon-wrapper">
+      <img src="https://cdn-icons-png.flaticon.com/512/3159/3159066.png" width="120" class="icon mb-3" />
+      <div class="blink hurray-text">🎉 Hurray! 🎉</div>
+    </div>
+    <h2 class="text-success fw-bold">Congratulations!</h2>
+    <p class="fs-5">You passed with a score of <strong>{{ score }}%</strong>.</p>
+    <p class="text-muted">{{ message }}</p>
+  </div>
+
+  <!-- ❌ FAIL UI -->
+<ng-template #failTemplate>
+  <div class="fail-animation-container">
+    <img 
+      src="https://cdn-icons-png.flaticon.com/512/166/166527.png" 
+      alt="Sad Emoji"
+      width="140" 
+      class="mb-4"
+    />
+    <h2 class="text-danger fw-bold animate__animated animate__shakeX">😓 You didn’t pass</h2>
+    <p class="fs-5 text-muted">
+      Your score: <strong>{{ score }}%</strong><br>
+      Minimum required: <strong>80%</strong>
+    </p>
+    <button class="btn btn-outline-danger mt-3 px-4 py-2" (click)="retakeTest()">
+      🔁 Retake Test
+    </button>
+  </div>
+</ng-template>
+
+
+</div>
