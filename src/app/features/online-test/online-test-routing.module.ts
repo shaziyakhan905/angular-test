@@ -16,10 +16,10 @@ const routes: Routes = [
     canActivate: [authGuard],
     component: TestPageComponent
   },
-  { path: 'test-result',canActivate: [authGuard,roleGuard],data: { role: 'user' }, component: TestResultComponent,
+  { path: 'test-result',canActivate: [authGuard], component: TestResultComponent,
     
   },
-  { path: 'practice-tests',canActivate: [authGuard,roleGuard],data: { role: 'user' }, component: PracticeTestsComponent },
+  { path: 'practice-tests',canActivate: [authGuard], component: PracticeTestsComponent },
 ];
 
 @NgModule({

@@ -40,3 +40,13 @@ html, body {
   background-color: #fff;
 }
     
+.sidebar {
+  width: 240px;
+  transition: width 0.3s;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+  }
+}

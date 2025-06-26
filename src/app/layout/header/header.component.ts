@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
@@ -11,6 +11,8 @@ import { CommonHttpService } from 'src/app/services/common-http.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  @Output() toggleSidebar = new EventEmitter<void>();
+
   userProfile: any = {};
   profileImageUrl = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
   showDropdown = false;
