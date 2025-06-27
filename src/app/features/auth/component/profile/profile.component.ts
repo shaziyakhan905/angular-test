@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NotifiedService } from 'src/app/core/service/notified.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { CommonHttpService } from 'src/app/services/common-http.service';
+import imageCompression from 'browser-image-compression';
 
 @Component({
   selector: 'app-profile',
@@ -159,29 +160,50 @@ export class ProfileComponent implements OnInit {
 
   onImageSelected(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
-    this.imageError = '';
 
     if (!file) return;
 
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+
     if (!allowedTypes.includes(file.type)) {
-      this.imageError = 'Only JPG, JPEG, or PNG images are allowed';
+      this.notify.showError('Only JPG, JPEG, GIF or PNG images are allowed');
       return;
     }
 
-    if (file.size > 1 * 1024 * 1024) {
-      this.imageError = 'Image size should be less than 1MB';
+    if (file.size > 10 * 1024 * 1024) {
+      this.notify.showError('Image size should be less than 10MB');
       return;
     }
 
+    const options = {
+      maxSizeMB: 1, // Target maximum size in MB
+      maxWidthOrHeight: 500, // Resize to 500x500 max, good for profile images
+      useWebWorker: true
+    };
+    imageCompression(file, options)
+      .then(compressedFile => {
+        console.log('Original size:', (file.size / 1024).toFixed(2), 'KB');
+        console.log('Compressed size:', (compressedFile.size / 1024).toFixed(2), 'KB');
+
+        // You can now upload compressedFile instead of original file
+        this.uploadImage(compressedFile);
+      })
+      .catch(err => {
+        console.error(err);
+        this.notify.showError('Image compression failed');
+      });
+
+  }
+
+  uploadImage(file: File) {
     const formData = new FormData();
     formData.append('profileImage', file);
 
     this.commonHttp.post('user/uploadProfile', formData).subscribe({
-     next :(res: any) => {  // ✅ Correct placement of `res`
-      this.notify.showSuccess('Profile image updated successfully!');
-      this.fetchProfile(); 
-    },
+      next: (res: any) => {
+        this.notify.showSuccess('Profile image updated successfully!');
+        this.fetchProfile();
+      },
       error: (err) => {
         console.error(err);
         this.notify.showError(err.error?.message || 'Image upload failed');

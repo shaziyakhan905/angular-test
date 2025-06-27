@@ -95,8 +95,16 @@
       </div>
 
       <div class="mb-3">
+        <label class="form-label fw-bold">Test Description</label>
+        <textarea formControlName="description" class="form-control"
+          placeholder="Enter test description" rows="3"></textarea>
+        <div class="form-text">Provide a brief description of the test.</div>
+      </div>
+
+      <div class="mb-3">
         <label class="form-label fw-bold">Category</label>
         <select formControlName="category" class="form-select">
+          <option value="" disabled selected>Select Category</option>
           <option *ngFor="let cat of categories" [value]="cat._id">{{ cat.name }}</option>
         </select>
       </div>

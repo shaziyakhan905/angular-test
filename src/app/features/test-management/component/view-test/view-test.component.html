@@ -1,11 +1,20 @@
 <div class="container mt-4">
   <div class="card shadow-sm rounded-4 p-4">
-
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h4 class="fw-bold text-primary mb-0">Test Details</h4>
-      <button class="btn btn-outline-primary btn-sm" (click)="goBack()">
-        <i class="bi bi-arrow-left"></i> Back to Test Management
-      </button>
+
+      <div>
+        <h5 class="text-secondary mb-0">
+          Category :
+          <span class="badge bg-primary">{{ test.category?.name }}</span>
+        </h5>
+      </div>
+
+      <div>
+        <button class="btn btn-outline-primary btn-sm" (click)="goBack()">
+          <i class="bi bi-arrow-left"></i> Back to Test Management
+        </button>
+      </div>
+
     </div>
 
     <div *ngIf="loading" class="d-flex justify-content-center my-5">
@@ -14,33 +23,50 @@
 
     <div *ngIf="test && !loading">
       <div class="mb-4">
-        <h5 class="text-secondary">Title</h5>
         <p class="fs-5 fw-semibold text-dark">{{ test.title }}</p>
       </div>
-
       <div class="mb-4">
-        <h5 class="text-secondary">Category</h5>
-        <span class="badge bg-primary">{{ test.category?.name }}</span>
+        <p class="fs-6 text-dark">{{ test?.description }}</p>
       </div>
 
       <div>
-        <h5 class="text-secondary mb-3">Questions ({{ test.questions?.length || 0 }})</h5>
-        
+        <h5 class="text-secondary mb-3">Questions ({{ test.questions?.length ||
+          0 }})</h5>
+
         <div *ngIf="test.questions?.length > 0; else noQuestions">
-          <div class="border rounded-3 p-3 mb-3" *ngFor="let q of test.questions; let idx = index">
+          <div class="border rounded-3 p-3 mb-3"
+            *ngFor="let q of test.questions; let idx = index">
+
             <div class="fw-semibold mb-2 text-dark">
               {{ idx + 1 }}. {{ q.questionText }}
             </div>
 
+            <div *ngIf="q?.questionContent"
+              class="mb-2 text-dark questionContent-card">
+              <pre><code>{{ q?.questionContent }}</code></pre>
+            </div>
+
             <ul class="list-unstyled ms-3">
-              <li *ngFor="let opt of q.options" class="mb-1">
-                <i class="bi bi-dot text-primary"></i> {{ opt }}
+              <li *ngFor="let opt of q.options; let optIdx = index"
+                class="mb-1">
+                <i class="bi bi-dot text-primary"></i>
+
+                <span
+                  [ngClass]="{ 'text-success fw-semibold': q.correctAnswers?.includes(optIdx) }">
+                  {{ opt }}
+                </span>
+
+                <span *ngIf="q.correctAnswers?.includes(optIdx)"
+                  class="badge bg-success ms-2">
+                  Correct
+                </span>
               </li>
             </ul>
 
             <div *ngIf="q.type === 'textarea'" class="mt-2">
               <span class="badge bg-secondary">Text Answer</span>
             </div>
+
           </div>
         </div>
 

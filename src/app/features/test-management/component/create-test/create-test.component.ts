@@ -27,6 +27,7 @@ export class CreateTestComponent implements OnInit {
   ngOnInit(): void {
     this.testForm = this.fb.group({
       title: ['', Validators.required],
+      description: ['', Validators.required],
       category: ['', Validators.required],
       questions: this.fb.array([])
     });
@@ -73,19 +74,11 @@ export class CreateTestComponent implements OnInit {
     const questionGroup = this.fb.group({
       type: [prefillData?.type || 'radio', Validators.required],
       questionText: [prefillData?.questionText || '', Validators.required],
+      questionContent: [prefillData?.questionContent || ''],
       options: this.fb.array([]),
       correctAnswers: this.fb.control([]) // Ensure it's an array by default
     });
 
-    // if (prefillData?.options?.length) {
-    //   prefillData.options.forEach((opt: string) => {
-    //     (questionGroup.get('options') as FormArray).push(this.fb.control(opt));
-    //   });
-    // } else {
-    //   (questionGroup.get('options') as FormArray).push(this.fb.control(''));
-    // }
-
-    // this.questions.push(questionGroup);
     // Push options
     if (prefillData?.options?.length) {
       prefillData.options.forEach((opt: string) => {
@@ -132,7 +125,8 @@ export class CreateTestComponent implements OnInit {
         const test = res.data;
 
         this.testForm.patchValue({
-          title: test.title,
+          title: test?.title,
+          description: test?.description || '',
           category: test.category?._id || ''
         });
 
@@ -143,6 +137,7 @@ export class CreateTestComponent implements OnInit {
           this.addQuestion({
             type: q.type,
             questionText: q.questionText,
+            questionContent: q?.questionContent || "",
             options: q.options,
             correctAnswers: q.correctAnswers
           });

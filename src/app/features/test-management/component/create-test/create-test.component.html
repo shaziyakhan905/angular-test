@@ -9,6 +9,12 @@
         <input type="text" formControlName="title" class="form-control"
           placeholder="Enter test title">
       </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Test Description</label>
+        <textarea formControlName="description" class="form-control"
+          placeholder="Enter test description" rows="3"></textarea>
+        <div class="form-text">Provide a brief description of the test.</div>
+      </div>
 
       <div class="mb-3">
         <label class="form-label fw-bold">Category</label>
@@ -45,6 +51,14 @@
             <input type="text" formControlName="questionText"
               class="form-control" placeholder="Enter question">
           </div>
+          <div class="mb-2">
+            <label class="form-label">Question Content</label>
+            <textarea formControlName="questionContent"
+              class="form-control" placeholder="Enter question content"
+              rows="3"></textarea>
+            <div class="form-text">Optional: Provide additional content or
+              context for the question.</div>
+          </div>
 
           <div *ngIf="question.get('type')?.value !== 'textarea'">
             <label class="form-label">Options</label>
@@ -67,7 +81,8 @@
           </div>
 
           <!-- Correct Answer Selection -->
-          <div *ngIf="question.get('type')?.value !== 'textarea'" class="mt-2">
+          <div *ngIf="question.get('type')?.value !== 'textarea'"
+            class="mt-2">
             <label class="form-label">Select Correct Answer(s)</label>
 
             <div formArrayName="options" class="ms-3">

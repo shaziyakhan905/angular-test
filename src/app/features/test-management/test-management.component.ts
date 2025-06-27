@@ -32,6 +32,7 @@ export class TestManagementComponent implements OnInit {
   ) {
     this.testForm = this.fb.group({
       title: ['', Validators.required],
+      description: ['', Validators.required],
       category: ['', Validators.required]
     });
   }
@@ -109,6 +110,7 @@ export class TestManagementComponent implements OnInit {
     }
     const formData = new FormData();
     formData.append('title', this.testForm.value.title);
+    formData.append('description', this.testForm.value.description);
     formData.append('category', this.testForm.value.category);
 
     if (this.selectedQuestionFile) {

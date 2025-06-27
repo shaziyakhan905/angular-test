@@ -1,48 +1,56 @@
 <div class="container py-4" *ngIf="testData">
-  <h2 class="mb-4 text-primary">{{ testData.title }}</h2>
+  <h5 class="mb-2 text-primary">{{ testData.title }}</h5>
+  <p>{{ testData?.description }}</p>
 
   <!-- Show each question -->
   <form (ngSubmit)="submitTest()" *ngIf="resultStatus === ''">
     <div *ngFor="let question of questions; let i = index"
-      class="mb-4 p-3 border rounded shadow-sm bg-white">
-      <h5 class="mb-3">Q{{ i + 1 }}. {{ question.questionText }}</h5>
+      class="mb-3 p-2 border rounded shadow-sm bg-white">
+      <h6 class="mb-2">Q{{ i + 1 }}. {{ question.questionText }}</h6>
+      <div *ngIf="question?.questionContent"
+        class="mb-2 text-dark questionContent-card">
+        <pre><code>{{ question?.questionContent }}</code></pre>
+      </div>
 
       <!-- RADIO -->
       <ng-container *ngIf="question.type === 'radio'">
-        <div *ngFor="let opt of question.options; let optIndex = index" class="form-check mb-2 ps-4">
-         <div class="d-flex align-items-center gap-2">
+        <div *ngFor="let opt of question.options; let optIndex = index"
+          class="form-check mb-2 ps-4">
+          <div class="d-flex align-items-center gap-2">
 
-           <input
-             class="form-check-input"
-             type="radio"
-             [id]="'radio-' + i + '-' + optIndex"
-             [checked]="selectedAnswers[i] === optIndex"
-             (change)="selectAnswer(i, optIndex)"
-             name="radoGroup{{i}}">
- 
-           <label class="form-check-label fw-medium" [for]="'radio-' + i + '-' + optIndex">
-             {{ opt }}
-           </label>
-         </div>
+            <input
+              class="form-check-input"
+              type="radio"
+              [id]="'radio-' + i + '-' + optIndex"
+              [checked]="selectedAnswers[i] === optIndex"
+              (change)="selectAnswer(i, optIndex)"
+              name="radoGroup{{i}}">
+
+            <label class="form-check-label fw-medium"
+              [for]="'radio-' + i + '-' + optIndex">
+              {{ opt }}
+            </label>
+          </div>
         </div>
       </ng-container>
 
       <!-- CHECKBOX -->
       <ng-container *ngIf="question.type === 'checkbox'">
-        <div *ngFor="let opt of question.options; let optIndex = index" class="form-check mb-2 ps-4">
-             <div class="d-flex align-items-center gap-2">
-               <input
-                 class="form-check-input"
-                 type="checkbox"
-                 [id]="'checkbox-' + i + '-' + optIndex"
-                 [checked]="selectedAnswers[i]?.includes(optIndex)"
-                 (change)="toggleCheckbox(i, optIndex)">
-     
-               <label class="form-check-label fw-medium"
-                 [for]="'checkbox-' + i + '-' + optIndex">
-                 {{ opt }}
-               </label>
-             </div>
+        <div *ngFor="let opt of question.options; let optIndex = index"
+          class="form-check mb-2 ps-4">
+          <div class="d-flex align-items-center gap-2">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              [id]="'checkbox-' + i + '-' + optIndex"
+              [checked]="selectedAnswers[i]?.includes(optIndex)"
+              (change)="toggleCheckbox(i, optIndex)">
+
+            <label class="form-check-label fw-medium"
+              [for]="'checkbox-' + i + '-' + optIndex">
+              {{ opt }}
+            </label>
+          </div>
         </div>
       </ng-container>
 
