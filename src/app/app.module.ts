@@ -15,9 +15,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { HttpErrorInterceptor } from './core/interceptor/http-error.interceptor';
 import { LaaderInterceptor } from './core/interceptor/laader.interceptor';
-import { LoaderComponent } from './component/loader/loader.component';
 import { UnauthorizedComponent } from './component/unauthorized/unauthorized.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { LoaderComponent } from './component/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -36,8 +36,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule, // required animations module
-    ToastrModule.forRoot(), NgbModule,
-    LoaderComponent
+    ToastrModule.forRoot(), NgbModule
 ],
   providers: [
      { provide: HTTP_INTERCEPTORS, 
