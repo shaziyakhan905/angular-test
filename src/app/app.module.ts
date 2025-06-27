@@ -35,9 +35,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-      BrowserAnimationsModule, // required animations module
-    ToastrModule.forRoot(), NgbModule
-  ],
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot(), NgbModule,
+    LoaderComponent
+],
   providers: [
      { provide: HTTP_INTERCEPTORS, 
       useClass: AuthInterceptor,

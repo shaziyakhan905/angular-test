@@ -3,6 +3,7 @@ import { LoaderService } from 'src/app/services/loader.service';
 
 @Component({
   selector: 'app-loader',
+  standalone:false,
   templateUrl: './loader.component.html',
   styleUrls: ['./loader.component.scss']
 })

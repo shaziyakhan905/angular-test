@@ -3,45 +3,61 @@
 
   <!-- Show each question -->
   <form (ngSubmit)="submitTest()" *ngIf="resultStatus === ''">
-    <div *ngFor="let question of questions; let i = index" class="mb-4 p-3 border rounded shadow-sm bg-white">
+    <div *ngFor="let question of questions; let i = index"
+      class="mb-4 p-3 border rounded shadow-sm bg-white">
       <h5 class="mb-3">Q{{ i + 1 }}. {{ question.questionText }}</h5>
 
       <!-- RADIO -->
       <ng-container *ngIf="question.type === 'radio'">
-        <div *ngFor="let option of question.options" class="form-check mb-2">
-          <input class="form-check-input"
-                 type="radio"
-                 [name]="'q' + i"
-                 [value]="option"
-                 [checked]="selectedAnswers[i] === option"
-                 (change)="selectAnswer(i, option)">
-          <label class="form-check-label">{{ option }}</label>
+        <div *ngFor="let opt of question.options; let optIndex = index" class="form-check mb-2 ps-4">
+         <div class="d-flex align-items-center gap-2">
+
+           <input
+             class="form-check-input"
+             type="radio"
+             [id]="'radio-' + i + '-' + optIndex"
+             [checked]="selectedAnswers[i] === optIndex"
+             (change)="selectAnswer(i, optIndex)"
+             name="radoGroup{{i}}">
+ 
+           <label class="form-check-label fw-medium" [for]="'radio-' + i + '-' + optIndex">
+             {{ opt }}
+           </label>
+         </div>
         </div>
       </ng-container>
 
       <!-- CHECKBOX -->
       <ng-container *ngIf="question.type === 'checkbox'">
-        <div *ngFor="let option of question.options" class="form-check mb-2">
-          <input class="form-check-input"
+        <div *ngFor="let opt of question.options; let optIndex = index" class="form-check mb-2 ps-4">
+             <div class="d-flex align-items-center gap-2">
+               <input
+                 class="form-check-input"
                  type="checkbox"
-                 [value]="option"
-                 [checked]="selectedAnswers[i]?.includes(option)"
-                 (change)="toggleCheckbox(i, option)">
-          <label class="form-check-label">{{ option }}</label>
+                 [id]="'checkbox-' + i + '-' + optIndex"
+                 [checked]="selectedAnswers[i]?.includes(optIndex)"
+                 (change)="toggleCheckbox(i, optIndex)">
+     
+               <label class="form-check-label fw-medium"
+                 [for]="'checkbox-' + i + '-' + optIndex">
+                 {{ opt }}
+               </label>
+             </div>
         </div>
       </ng-container>
 
       <!-- TEXTAREA -->
-      <ng-container *ngIf="question.type === 'textarea'">
+      <!-- <ng-container *ngIf="question.type === 'textarea'">
         <textarea class="form-control"
-                  rows="4"
-                  [(ngModel)]="selectedAnswers[i]"
-                  [name]="'q' + i"
-                  placeholder="Type your answer here..."></textarea>
-      </ng-container>
+          rows="4"
+          [(ngModel)]="selectedAnswers[i]"
+          [name]="'q' + i"
+          placeholder="Type your answer here..."></textarea>
+      </ng-container> -->
     </div>
 
-    <button class="btn btn-success w-100 mt-3" type="submit" [disabled]="isSubmitDisabled()">Submit Test</button>
+    <button class="btn btn-success w-100 mt-3" type="submit"
+      [disabled]="isSubmitDisabled()">Submit Test</button>
   </form>
 
   <!-- Result Message UI will be handled in separate TestResultComponent -->

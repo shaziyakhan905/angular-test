@@ -4,7 +4,7 @@ import { CommonHttpService } from 'src/app/services/common-http.service';
 
 @Component({
   selector: 'app-test-page',
-  standalone:false,
+  standalone: false,
   templateUrl: './test-page.component.html',
   styleUrls: ['./test-page.component.scss']
 })
@@ -14,15 +14,15 @@ export class TestPageComponent implements OnInit {
   questions: any[] = [];
   selectedAnswers: any[] = [];
 
-   resultMessage: string = '';
+  resultMessage: string = '';
   resultStatus: 'pass' | 'fail' | '' = '';
   score: number = 0;
 
   constructor(
     private route: ActivatedRoute,
     private commonHttpService: CommonHttpService,
-    private router:Router
-  ) {}
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -42,28 +42,27 @@ export class TestPageComponent implements OnInit {
     });
   }
 
- selectAnswer(index: number, value: string) {
-    this.selectedAnswers[index] = value;
+  selectAnswer(questionIndex: number, optionIndex: number) {
+    this.selectedAnswers[questionIndex] = optionIndex;
   }
 
-  toggleCheckbox(index: number, value: string) {
-    if (!this.selectedAnswers[index]) {
-      this.selectedAnswers[index] = [];
+  toggleCheckbox(questionIndex: number, optionIndex: number) {
+    if (!this.selectedAnswers[questionIndex]) {
+      this.selectedAnswers[questionIndex] = [];
     }
-    const idx = this.selectedAnswers[index].indexOf(value);
+    const idx = this.selectedAnswers[questionIndex].indexOf(optionIndex);
     if (idx === -1) {
-      this.selectedAnswers[index].push(value);
+      this.selectedAnswers[questionIndex].push(optionIndex);
     } else {
-      this.selectedAnswers[index].splice(idx, 1);
+      this.selectedAnswers[questionIndex].splice(idx, 1);
     }
   }
 
-submitTest(): void {
+  submitTest(): void {
   const answersPayload = this.questions
     .map((q, index) => {
       const answer = this.selectedAnswers[index];
 
-      // Skip if user didn't answer the question
       if (answer === null || answer === undefined || 
          (Array.isArray(answer) && answer.length === 0)) {
         return null;
@@ -74,9 +73,8 @@ submitTest(): void {
         selectedAnswers: Array.isArray(answer) ? answer : [answer]
       };
     })
-    .filter(item => item !== null); // Remove unanswered questions
+    .filter(item => item !== null);
 
-  // ✅ Extra check to avoid sending empty payload
   if (answersPayload.length === 0) {
     alert('Please answer at least one question before submitting.');
     return;
@@ -86,12 +84,9 @@ submitTest(): void {
     answers: answersPayload
   }).subscribe({
     next: (res: any) => {
-       // ✅ Navigate to test result page with query params
-      const isPass = res.status === 'pass';
-
       this.router.navigate(['/online-test/test-result'], {
         queryParams: {
-          status: isPass ? 'pass' : 'fail',
+          status: res.status,
           score: res.score,
           message: res.message,
           testId: this.testId
@@ -108,20 +103,28 @@ submitTest(): void {
         }
       });
     }
-    
   });
 }
+
 
 isSubmitDisabled(): boolean {
   if (this.questions.length === 0) return true;
 
-  // Check if every question is answered
-  return this.selectedAnswers.some(answer => {
-    if (Array.isArray(answer)) {
-      return answer.length === 0;
+  return this.selectedAnswers.some((answer, index) => {
+    const question = this.questions[index];
+
+    if (question.type === 'textarea') {
+      return !answer || answer.trim() === '';
     }
-    return answer === null || answer === undefined || answer === '';
+
+    if (question.type === 'checkbox') {
+      return !Array.isArray(answer) || answer.length === 0;
+    }
+
+    // For radio (single choice), answer should be a valid number (index)
+    return answer === null || answer === undefined;
   });
 }
+
 
 }

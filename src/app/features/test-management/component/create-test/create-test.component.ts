@@ -11,7 +11,7 @@ import { CommonHttpService } from 'src/app/services/common-http.service';
 })
 export class CreateTestComponent implements OnInit {
 
- testForm!: FormGroup;
+  testForm!: FormGroup;
   categories: any[] = [];
   isEditMode: boolean = false;
   testId: string | null = null;
@@ -22,7 +22,7 @@ export class CreateTestComponent implements OnInit {
     private notify: NotifiedService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.testForm = this.fb.group({
@@ -47,14 +47,46 @@ export class CreateTestComponent implements OnInit {
     return this.testForm.get('questions') as FormArray;
   }
 
+  getQuestionsOptions(questionIndex: number) {
+    return (this.questions.at(questionIndex).get('options') as FormArray);
+  }
+
+  setRadioCorrectAnswer(questionIndex: number, optionIndex: number) {
+    const question = this.questions.at(questionIndex);
+    question.get('correctAnswers')?.setValue([optionIndex]);
+  }
+
+  toggleCheckboxCorrectAnswer(questionIndex: number, optionIndex: number) {
+    const question = this.questions.at(questionIndex);
+    let correctAnswers = question.get('correctAnswers')?.value || [];
+
+    if (correctAnswers.includes(optionIndex)) {
+      correctAnswers = correctAnswers.filter((idx: number) => idx !== optionIndex);
+    } else {
+      correctAnswers.push(optionIndex);
+    }
+
+    question.get('correctAnswers')?.setValue(correctAnswers);
+  }
+
   addQuestion(prefillData?: any): void {
     const questionGroup = this.fb.group({
       type: [prefillData?.type || 'radio', Validators.required],
       questionText: [prefillData?.questionText || '', Validators.required],
       options: this.fb.array([]),
-      correctAnswers: [prefillData?.correctAnswers?.join(', ') || '']
+      correctAnswers: this.fb.control([]) // Ensure it's an array by default
     });
 
+    // if (prefillData?.options?.length) {
+    //   prefillData.options.forEach((opt: string) => {
+    //     (questionGroup.get('options') as FormArray).push(this.fb.control(opt));
+    //   });
+    // } else {
+    //   (questionGroup.get('options') as FormArray).push(this.fb.control(''));
+    // }
+
+    // this.questions.push(questionGroup);
+    // Push options
     if (prefillData?.options?.length) {
       prefillData.options.forEach((opt: string) => {
         (questionGroup.get('options') as FormArray).push(this.fb.control(opt));
@@ -64,6 +96,12 @@ export class CreateTestComponent implements OnInit {
     }
 
     this.questions.push(questionGroup);
+
+    // Set correctAnswers AFTER adding the FormGroup to FormArray
+    if (prefillData?.correctAnswers?.length >= 0) {
+      const lastIndex = this.questions.length - 1;
+      this.questions.at(lastIndex).get('correctAnswers')?.setValue(prefillData.correctAnswers);
+    }
   }
 
   removeQuestion(index: number): void {
@@ -127,12 +165,18 @@ export class CreateTestComponent implements OnInit {
     const formValue = { ...this.testForm.value };
 
     formValue.questions.forEach((q: any) => {
-      if (q.type !== 'textarea' && typeof q.correctAnswers === 'string') {
-        q.correctAnswers = q.correctAnswers.split(',').map((ans: string) => ans.trim());
-      }
       if (q.type === 'textarea') {
+        // Remove options and correctAnswers for textarea
         delete q.options;
         delete q.correctAnswers;
+      } else {
+        // Ensure correctAnswers is an array of numbers (should be already)
+        if (!Array.isArray(q.correctAnswers)) {
+          q.correctAnswers = [];
+        }
+
+        // Remove empty options if accidentally present
+        q.options = q.options.filter((opt: string) => opt && opt.trim() !== '');
       }
     });
 
