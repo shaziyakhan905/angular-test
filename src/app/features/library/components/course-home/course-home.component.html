@@ -1,0 +1,101 @@
+<div class="container-fluid g-0">
+
+    <div class="row g-0 min-vh-100">
+
+        <!-- Sidebar: Category Tree -->
+        <div class="col-auto bg-white border-end" style="width: 300px;">
+            <app-category-sidebar 
+                [categoryTree]="categoryTree"
+                [canChange]="canChange"
+                (categorySelected)="selectCategory($event)">
+            </app-category-sidebar>
+        </div>
+
+        <!-- Main Content Area: Courses -->
+        <div class="col bg-light">
+            <div class="d-flex flex-column h-100">
+                <div class="p-3 border-bottom bg-white">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <!-- Left: Breadcrumb -->
+                        <div *ngIf="selectedCategoryHierarchy?.length; else noContent" class="text-muted">
+                            <ng-container *ngFor="let cat of selectedCategoryHierarchy; let last = last">
+                                {{ cat.name }}
+                                <span *ngIf="!last"> &raquo; </span>
+                            </ng-container>
+                        </div>
+
+                        <!-- Right: Home Button -->
+                        <button type="button" class="btn btn-sm btn-primary"
+                            (click)="navigateToLibraryHomePage()"><i class="bi bi-house-check-fill"></i></button>
+                    </div>
+
+                    <ng-template #noContent>
+                        <div class="text-muted">{{ categoryTree[0]?.name }}</div>
+                    </ng-template>
+                </div>
+
+
+                <div class="p-3 overflow-auto flex-grow-1">
+                    <div class="d-flex align-items-center mb-1">
+                        <ng-container *ngIf="selectedCategory && !selectedCategory?.children?.length && canChange">
+                            <button class="btn btn-sm btn-outline-primary ms-auto" (click)="openCourseModal('add')">
+                                <i class="bi bi-plus"></i> Add New Course
+                            </button>
+                        </ng-container>
+                    </div>
+                    <ng-container *ngIf="selectedCategoryHierarchy?.length || courseViewMode !=''; else courseContent"
+                        class="text-muted">
+                        <ng-container *ngIf="courseViewMode === 'list'">
+                            <app-course-list [canChange]="canChange" [courses]="courses"
+                                (edit)="editCourse($event)" (delete)="deleteCourse($event)"
+                                (view)="viewCourse($event)"></app-course-list>
+                        </ng-container>
+                        <ng-container *ngIf="courseViewMode === 'view'">
+                            <app-course-details [course]="selectedCourse"
+                                (back)="clearSelection()"></app-course-details>
+                        </ng-container>
+                    </ng-container>
+
+                    <ng-template #courseContent>
+                        <div [innerHTML]="categoryTree[0]?.description"></div>
+                    </ng-template>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- courseModal Template -->
+<ng-template #courseModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">{{courseModalData.action === 'edit' ? 'Edit Course' : 'Create New Course'}}</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="courseForm" (ngSubmit)="saveCourse(courseModalData.action)">
+            <!-- {{selectedCategory?.name}} -->
+            <div class="mb-3">
+                <input type="text" class="form-control" [value]="getCategoryName" disabled>
+            </div>
+            <div class="mb-3">
+            </div>
+            <div class="mb-3">
+                <input type="text" class="form-control" formControlName="title" placeholder="Course Title..">
+            </div>
+            <div class="mb-3">
+                <input type="text" class="form-control" formControlName="price" placeholder="Course Price..">
+            </div>
+            <div class="mb-3">
+                <app-rich-text-editor formControlName="description" [label]="'Course Content'"></app-rich-text-editor>
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-sm btn-outline-primary">
+                    {{courseModalData.action == 'edit' ? 'Update Course' : 'Save Course'}}
+                </button>
+            </div>
+        </form>
+    </div>
+</ng-template>

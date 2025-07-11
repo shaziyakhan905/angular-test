@@ -26,7 +26,7 @@ export class ManageUsersComponent implements OnInit {
   }
 
   goToViewUser(userId: string): void {
-  this.router.navigate([`/manage-users/view-user/${userId}`]);
+  this.router.navigate([`/dashboard/test/manage-users/view-user/${userId}`]);
 }
 
 }

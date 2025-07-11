@@ -1,27 +1,41 @@
 <div class="container py-4">
-  <ng-container *ngIf="tests.length > 0; else noTests">
-
-    <!-- 🏷️ Category Header -->
-    <div class="mb-4">
+  <!-- Header + Filter -->
+  <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+    <div>
       <span class="badge rounded-pill bg-primary fs-6 px-3 py-2 shadow-sm">
         📂 {{ tests[0]?.category?.name || 'Category' }} Tests
       </span>
     </div>
+    <div class="d-flex gap-2 align-items-center mt-2 mt-md-0">
+      <select class="form-select form-select-sm" [(ngModel)]="selectedLevel"
+        (change)="filterTestsByLevel()">
+        <option value>🔍 Filter by Level</option>
+        <option value="Beginner">🟢 Beginner</option>
+        <option value="Intermediate">🟠 Intermediate</option>
+        <option value="Expert">🔴 Expert</option>
+      </select>
+     <button class="btn btn-secondary btn-sm" (click)="resetLevelFilter()" title="Reset Filter">
+<i class="bi bi-arrow-clockwise fs-5"></i>
+</button>
 
-    <!-- 🧪 List View Style -->
+    </div>
+  </div>
+
+  <!-- Test Cards -->
+  <ng-container *ngIf="filteredTests.length > 0; else noTests">
     <div class="d-flex flex-column gap-3">
-      <div *ngFor="let test of tests" class="card shadow-sm px-3 py-3 d-flex flex-row justify-content-between align-items-center flex-wrap">
-        
-        <!-- Left Content -->
+      <div *ngFor="let test of filteredTests"
+        class="card shadow-sm px-3 py-3 d-flex flex-row justify-content-between align-items-center flex-wrap">
+        <!-- Left -->
         <div class="flex-grow-1 pe-3">
           <h5 class="mb-1">{{ test.title }}</h5>
           <p class="mb-0 text-muted">
             <i class="bi bi-tags-fill me-1 text-secondary"></i>
-            <strong>Category:</strong> {{ test.category?.name || 'N/A' }}
+            <strong>Category:</strong> {{ test.category?.name || 'N/A' }} |
+            <strong>Level:</strong> {{ test.level || 'N/A' }}
           </p>
         </div>
-
-        <!-- Right Button -->
+        <!-- Right -->
         <div>
           <button class="btn btn-primary" (click)="goToTest(test._id)">
             Take Test
@@ -29,13 +43,12 @@
         </div>
       </div>
     </div>
-
   </ng-container>
 
-  <!-- 🛑 No Tests Fallback -->
+  <!-- No Tests Found -->
   <ng-template #noTests>
     <div class="alert alert-warning text-center mt-5">
-      No tests found for this category.
+      <i class="bi bi-info-circle"></i> No tests found for this level.
     </div>
   </ng-template>
 </div>

@@ -1,0 +1,87 @@
+<div class="d-flex flex-column h-100 p-3">
+  <div class="d-flex align-items-center mb-4">
+    <h5 class="fw-bold mb-0">📚 Categories</h5>
+  </div>
+  <div class="accordion" id="categoryAccordion">
+    <ng-container *ngFor="let cat of categoryTree; let i = index">
+      <div class="accordion-item border-0 mb-2">
+        <!-- Header -->
+        <div class="d-flex align-items-center bg-light shadow-sm px-3 py-2 rounded justify-content-between">
+          <button class="accordion-button bg-light border-0 p-0 text-start w-100" [ngClass]="{ 'collapsed': i !== 0 }"
+            type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-' + cat._id"
+            [attr.aria-expanded]="i === 0 ? 'true' : 'false'" [attr.aria-controls]="'collapse-' + cat._id">
+            {{ cat.name }}
+          </button>
+          <div class="ms-2 action-buttons">
+            <div class="dropdown" *ngIf="canChange">
+              <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                <i class="bi bi-three-dots-vertical"></i>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" (click)="openAddModal(cat)">
+                    <i class="bi bi-plus-circle me-2"></i>Add
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" (click)="openEditModal(cat)">
+                    <i class="bi bi-pencil me-2"></i>Edit
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item text-danger" (click)="deleteCategory(cat, categoryTree)">
+                    <i class="bi bi-trash me-2"></i>Delete
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Children -->
+        <div [id]="'collapse-' + cat._id" class="accordion-collapse collapse" [ngClass]="{ 'show': i === 0 }">
+          <div class="accordion-body">
+            <app-category-children [children]="cat.children" [collapsed]="true"
+              [canChange]="canChange"
+              (add)="openAddModal($event)" (edit)="openEditModal($event)"
+              (delete)="deleteCategory($event, cat.children)" (categorySelected)="selectCategory($event)">
+            </app-category-children>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="mt-auto small text-muted">Library System © 2025</div>
+</div>
+
+<!-- Modal -->
+<ng-template #categoryModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">
+      {{ categoryModalData?.action === 'edit' ? 'Edit Category' : 'Add Category' }}
+    </h5>
+    <button class="btn-close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="categoryForm" (ngSubmit)="saveCategory()">
+      <input type="text" class="form-control mb-2" formControlName="parentCategoryName" readonly>
+      <input type="text" class="form-control mb-2" formControlName="parentCategoryId" readonly>
+      <input type="text" class="form-control mb-3" formControlName="name" placeholder="Category Name">
+      <div class="mb-3">
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="navigableCheckbox" formControlName="navigable" />
+          <label class="form-check-label" for="navigableCheckbox">
+            Navigable
+          </label>
+        </div>
+      </div>
+      <div class="mb-3">
+        <app-rich-text-editor formControlName="description" [label]="'Course Content'"></app-rich-text-editor>
+      </div>
+
+      <button class="btn btn-primary" type="submit">Save</button>
+    </form>
+  </div>
+</ng-template>

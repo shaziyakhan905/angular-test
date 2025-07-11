@@ -3,11 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './layout/header/header.component';
-import { FooterComponent } from './layout/footer/footer.component';
-import { SidebarComponent } from './layout/sidebar/sidebar.component';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import { HomeComponent } from './component/home/home.component'
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HomeComponent } from './features/test-home/components/home/home.component'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthInterceptor } from './core/interceptor/auth.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -22,11 +19,7 @@ import { LoaderComponent } from './component/loader/loader.component';
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
-    FooterComponent,
-    SidebarComponent,
     HomeComponent,
-    LoaderComponent,
     UnauthorizedComponent
   ],
   imports: [
@@ -37,17 +30,23 @@ import { LoaderComponent } from './component/loader/loader.component';
     ReactiveFormsModule,
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(), NgbModule
-],
+  ],
   providers: [
-     { provide: HTTP_INTERCEPTORS, 
-      useClass: AuthInterceptor,
-       multi: true },
-       { provide: HTTP_INTERCEPTORS, 
-      useClass: HttpErrorInterceptor,
-       multi: true },
-       { provide: HTTP_INTERCEPTORS, 
+    {
+      provide: HTTP_INTERCEPTORS,
       useClass: LaaderInterceptor,
-       multi: true },
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
+      multi: true
+    },
   ],
   bootstrap: [AppComponent]
 })

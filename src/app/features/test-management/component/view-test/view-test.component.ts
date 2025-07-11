@@ -40,7 +40,7 @@ export class ViewTestComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/test-management']);
+    this.router.navigate(['/dashboard/test/test-management']);
   } 
 
 }

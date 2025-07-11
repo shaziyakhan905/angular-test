@@ -1,0 +1,22 @@
+.accordion-body{
+    padding: 5px;
+}
+.bg-light {
+    position: relative;
+
+    .action-buttons {
+        display: flex;
+        position: absolute;
+        right: -5px;
+        top: -15px;
+
+        button {
+            padding: 0px;
+        }
+    }
+}
+.dropdown-menu{
+    .dropdown-item{
+        cursor: pointer;
+    }
+}

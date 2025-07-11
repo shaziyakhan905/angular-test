@@ -1,0 +1,17 @@
+<div class="editor-header d-flex justify-content-between align-items-center mb-2">
+  <span class="fw-semibold">{{label}}</span>
+  <button type="button" class="btn btn-sm btn-outline-secondary" (click)="toggleFullscreen()">
+    {{ isFullscreen ? 'Exit Fullscreen' : '🗖 Maximize' }}
+  </button>
+</div>
+
+<div class="editor-container" [class.fullscreen-editor]="isFullscreen">
+  <quill-editor
+    [(ngModel)]="value"
+    (ngModelChange)="onChange($event)"
+    [modules]="modules"
+    [placeholder]="placeholder"
+    [style.height]="editorHeight"
+    [style.width]="'100%'">
+  </quill-editor>
+</div>

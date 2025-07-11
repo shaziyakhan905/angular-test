@@ -5,7 +5,7 @@
     <i class="bi bi-list"></i>
   </button>
 
-  <span class="navbar-brand" routerLink="/home">🧠 TestApp</span>
+  <span class="navbar-brand cursor-pointer" routerLink="/">🧠 TestApp</span>
 
   <div *ngIf="isAuthenticated$ | async; else loggedOut">
     <div class="position-relative">
@@ -26,7 +26,7 @@
   </div>
 
   <ng-template #loggedOut>
-    <button class="btn btn-primary d-flex align-items-center gap-2" routerLink="/auth/login">
+    <button class="btn btn-primary d-flex align-items-center gap-2" (click)="logout()">
       <i class="bi bi-person-circle"></i> Login / Sign Up
     </button>
   </ng-template>

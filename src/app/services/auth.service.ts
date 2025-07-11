@@ -14,8 +14,8 @@ export class AuthService {
   isLoggedIn$ = this.isAuthenticated$.asObservable();
   profileSubject = new BehaviorSubject<any>(null);
   profile$ = this.profileSubject.asObservable();
-  //private baseUrl = 'http://localhost:8080/api';
-  private baseUrl = 'https://myfirstapp-api-v1en.onrender.com/api';
+  private baseUrl = 'http://localhost:8080/api';
+  //private baseUrl = 'https://myfirstapp-api-v1en.onrender.com/api';
 
   constructor(private http: HttpClient, private router: Router) {
     // Check token on service initialization
@@ -49,7 +49,7 @@ export class AuthService {
     this.setIsAuthenticated(false);
     this.userProfile$.next(null);
     this.userRole$.next(null);
-    this.router.navigate(['/auth/login']);
+    this.router.navigate(['/dashboard/test/auth/login']);
   }
 
   setIsAuthenticated(status: boolean): void {

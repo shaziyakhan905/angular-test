@@ -1,0 +1,38 @@
+.editor-container {
+  width: 100%;
+
+  .ql-container {
+    width: 100%;
+    min-height: 200px;
+    max-width: 100%;
+    box-shadow: 0 0 0 1px #ccc;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .ql-editor {
+    width: 100%;
+    resize: vertical;
+    overflow: auto;
+    min-height: inherit;
+  }
+}
+
+.fullscreen-editor {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: auto;
+  z-index: 1055;
+  background: #fff;
+  padding: 1rem;
+  overflow: auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.editor-header {
+  font-size: 14px;
+  color: #555;
+}

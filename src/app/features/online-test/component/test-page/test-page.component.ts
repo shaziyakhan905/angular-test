@@ -84,7 +84,9 @@ export class TestPageComponent implements OnInit {
     answers: answersPayload
   }).subscribe({
     next: (res: any) => {
-      this.router.navigate(['/online-test/test-result'], {
+      localStorage.setItem('submittedAnswers', JSON.stringify(answersPayload));
+
+      this.router.navigate(['/dashboard/test/online-test/test-result'], {
         queryParams: {
           status: res.status,
           score: res.score,
@@ -94,7 +96,7 @@ export class TestPageComponent implements OnInit {
       });
     },
     error: (err) => {
-      this.router.navigate(['/online-test/test-result'], {
+      this.router.navigate(['/dashboard/test/online-test/test-result'], {
         queryParams: {
           status: 'fail',
           score: err.error?.score || 0,

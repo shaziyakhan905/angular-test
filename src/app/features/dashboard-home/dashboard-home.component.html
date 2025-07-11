@@ -1,0 +1,17 @@
+<div class="d-flex flex-column vh-100">
+  <!-- Header with Sidebar Toggle -->
+  <app-header
+    (toggleSidebar)="sidebarCollapsed = !sidebarCollapsed"></app-header>
+
+  <!-- Main Layout -->
+  <div class="d-flex flex-grow-1">
+    <main class="flex-grow-1 bg-white">
+      <app-loader></app-loader>
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+
+  <!-- Footer -->
+  <app-footer></app-footer>
+</div>

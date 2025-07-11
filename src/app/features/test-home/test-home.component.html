@@ -1,0 +1,12 @@
+ <div class="d-flex flex-grow-1">
+    
+    <!-- Sidebar with Collapse -->
+    <div [ngClass]="{'d-none': sidebarCollapsed, 'd-block': !sidebarCollapsed}" class="bg-light shadow-sm sidebar">
+      <app-sidebar></app-sidebar>
+    </div>
+
+    <!-- Main Content -->
+    <main class="p-4 flex-grow-1 bg-white">
+      <router-outlet></router-outlet>
+    </main>
+</div>

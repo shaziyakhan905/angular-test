@@ -35,6 +35,8 @@
                "node_modules/bootstrap-icons/font/bootstrap-icons.css",
                "node_modules/animate.css/animate.min.css",
                  "node_modules/ngx-toastr/toastr.css",
+                  "node_modules/quill/dist/quill.snow.css",
+               "node_modules/highlight.js/styles/github.css",
               "src/styles.scss"
             ],
             "scripts": [

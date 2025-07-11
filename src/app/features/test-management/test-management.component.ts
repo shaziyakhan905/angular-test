@@ -21,6 +21,11 @@ export class TestManagementComponent implements OnInit {
   loading: boolean = false;
   Math: any;
   selectedQuestionFile: File | null = null;
+filteredTests: any[] = [];
+selectedCategory: string = '';
+selectedLevel: string = '';
+  filterCategory: string = '';
+  filterLevel: string = '';
 
   constructor(
     private commonHttp: CommonHttpService,
@@ -40,6 +45,7 @@ export class TestManagementComponent implements OnInit {
   ngOnInit(): void {
     this.getAllTests();
     this.loadCategories();
+
   }
 
   loadCategories(): void {
@@ -51,19 +57,40 @@ export class TestManagementComponent implements OnInit {
   getAllTests(): void {
     this.commonHttp.get('test').subscribe((res: any) => {
       this.tests = res.data;
+       this.filteredTests = [...this.tests];
     });
   }
 
+  applyFilters(): void {
+  const cat = this.selectedCategory.toLowerCase();
+  const lvl = this.selectedLevel.toLowerCase();
+
+  this.filteredTests = this.tests.filter(test => {
+    const matchCat = cat ? test.category?.toLowerCase() === cat : true;
+    const matchLvl = lvl ? test.level?.toLowerCase() === lvl : true;
+    return matchCat && matchLvl;
+  });
+
+  this.page = 1; // Reset to page 1 on filter
+}
+
+resetFilters(): void {
+  this.selectedCategory = '';
+  this.selectedLevel = '';
+  this.filteredTests = [...this.tests];
+  this.page = 1;
+}
+
   goToCreateTest(): void {
-    this.router.navigate(['/test-management/create-test']);
+    this.router.navigate(['/dashboard/test/test-management/create-test']);
   }
 
   viewTest(testId: string): void {
-    this.router.navigate(['/test-management/view-test', testId]);
+    this.router.navigate(['/dashboard/test/test-management/view-test', testId]);
   }
 
   updateTest(testId: string): void {
-    this.router.navigate(['/test-management/create-test'], { queryParams: { testId } });
+    this.router.navigate(['/dashboard/test/test-management/create-test'], { queryParams: { testId } });
   }
 
   deleteTest(testId: string): void {

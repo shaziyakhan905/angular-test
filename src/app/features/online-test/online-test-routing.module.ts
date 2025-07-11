@@ -7,6 +7,7 @@ import { TestResultComponent } from './component/test-result/test-result.compone
 import { PracticeTestsComponent } from './component/practice-tests/practice-tests.component';
 import { authGuard } from 'src/app/core/guard/auth.guard';
 import { roleGuard } from 'src/app/core/guard/role.guard';
+import { ViewSummaryComponent } from './component/view-summary/view-summary.component';
 
 const routes: Routes = [
   { path: '', component: OnlineTestComponent },
@@ -16,10 +17,12 @@ const routes: Routes = [
     canActivate: [authGuard],
     component: TestPageComponent
   },
-  { path: 'test-result',canActivate: [authGuard], component: TestResultComponent,
-    
+  {
+    path: 'test-result', canActivate: [authGuard], component: TestResultComponent,
+
   },
-  { path: 'practice-tests',canActivate: [authGuard], component: PracticeTestsComponent },
+  { path: 'practice-tests', canActivate: [authGuard], component: PracticeTestsComponent },
+  { path: 'view-summary', canActivate: [authGuard], component: ViewSummaryComponent },
 ];
 
 @NgModule({

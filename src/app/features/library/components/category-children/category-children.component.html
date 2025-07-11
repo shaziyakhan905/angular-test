@@ -1,0 +1,60 @@
+<ul class="list-group border-0">
+  <div class="mb-1">
+    <input type="text" class="form-control" placeholder="Search categories..." [(ngModel)]="categorySearchTerm"
+      (input)="onSearchCategory()" />
+  </div>
+  <ng-container *ngFor="let cat of filteredChildren">
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center position-relative py-2 px-3 bg-white rounded shadow-sm mb-2 border">
+      <!-- Category name -->
+      <div class="d-flex align-items-center gap-2 w-100">
+        <i class="bi" [ngClass]="{
+          'bi-chevron-down': toggleStates[cat._id] && cat.children.length > 0,
+          'bi-chevron-right': !toggleStates[cat._id] && cat.children.length > 0
+        }"></i>
+
+        <span class="category-name text-dark fw-medium flex-grow-1" (click)="toggleCollapse(cat)">
+          {{ cat.name }}
+        </span>
+
+        <!-- Dropdown menu -->
+        <div class="dropdown ms-auto" *ngIf="canChange">
+          <button class="btn btn-sm btn-outline-secondary border-0" type="button" data-bs-toggle="dropdown">
+            <i class="bi bi-three-dots-vertical"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+            <li>
+              <a class="dropdown-item" (click)="add.emit(cat)">
+                <i class="bi bi-plus-circle me-2"></i>Add
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" (click)="edit.emit(cat)">
+                <i class="bi bi-pencil me-2"></i>Edit
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item text-danger" (click)="delete.emit(cat)">
+                <i class="bi bi-trash me-2"></i>Delete
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </li>
+
+    <!-- Children -->
+    <div class="ms-4 ps-2 border-start" *ngIf="toggleStates[cat._id]">
+      <app-category-children [children]="cat.children"
+        [canChange]="canChange"
+        (categorySelected)="categorySelected.emit($event)" (add)="add.emit($event)" (edit)="edit.emit($event)"
+        (delete)="delete.emit($event)">
+      </app-category-children>
+    </div>
+  </ng-container>
+
+   <!-- Show when no matching category -->
+  <li *ngIf="filteredChildren.length === 0" class="list-group-item text-muted text-center py-3">
+    <i class="bi bi-info-circle me-2"></i>No categories found.
+  </li>
+</ul>

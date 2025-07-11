@@ -17,3 +17,17 @@ h5 {
   min-width: 120px;
   font-weight: 500;
 }
+.form-select {
+  min-width: 180px;
+}
+.card {
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    transform: scale(1.01);
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.1);
+  }
+}
+// button:hover i.bi-arrow-clockwise {
+//   transform: rotate(90deg);
+//   transition: transform 0.3s ease;
+// }

@@ -89,7 +89,6 @@ export class SidebarComponent implements OnInit {
 
     // ✅ Get all categories on load
     this.commonHttpService.get('test/getAllCategories').subscribe((res: any) => {
-      console.log(res)
       this.categories = res.data
     })
   }
@@ -103,25 +102,25 @@ export class SidebarComponent implements OnInit {
 
   // ✅ Navigate using query params
   goToCategory(categoryId: string): void {
-    this.router.navigate(['/online-test/tests'], {
+    this.router.navigate(['/dashboard/test/online-test/tests'], {
       queryParams: { category: categoryId }
     });
 
   }
 
   goToTestManagement(): void {
-    this.router.navigate(['/test-management']);
+    this.router.navigate(['/dashboard/test/test-management']);
   }
 
   goToManageUsers(): void {
-    this.router.navigate(['/manage-users']);
+    this.router.navigate(['/dashboard/test/manage-users']);
   }
 
   changeSideMenu(menuTab: string) {
     this.menuTab = menuTab;
   }
    goToCategoryManagement(): void {
-    this.router.navigate(['/category-management']);
+    this.router.navigate(['/dashboard/test/category-management']);
   }
 }
 

@@ -5,9 +5,12 @@ import { OnlineTestRoutingModule } from './online-test-routing.module';
 import { OnlineTestComponent } from './online-test.component';
 import { TestListComponent } from './component/test-list/test-list.component';
 import { TestPageComponent } from './component/test-page/test-page.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestResultComponent } from './component/test-result/test-result.component';
 import { PracticeTestsComponent } from './component/practice-tests/practice-tests.component';
+import { ViewSummaryComponent } from './component/view-summary/view-summary.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { ProfileComponent } from '../dashboard-home/components/profile/profile.component';
 
 
 @NgModule({
@@ -16,12 +19,15 @@ import { PracticeTestsComponent } from './component/practice-tests/practice-test
     TestListComponent,
     TestPageComponent,
     TestResultComponent,
-    PracticeTestsComponent
+    PracticeTestsComponent,
+    ViewSummaryComponent,
   ],
   imports: [
     CommonModule,
     OnlineTestRoutingModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    NgxPaginationModule
   ]
 })
 export class OnlineTestModule { }

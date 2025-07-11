@@ -6,29 +6,39 @@
       <div class="blink hurray-text">🎉 Hurray! 🎉</div>
     </div>
     <h2 class="text-success fw-bold">Congratulations!</h2>
-    <p class="fs-5">You passed with a score of <strong>{{ score }}%</strong>.</p>
+    <p class="fs-5">You passed with a score of <strong>{{ score || 0 }}%</strong>.</p>
     <p class="text-muted">{{ message }}</p>
+
+    <div class="d-flex justify-content-center gap-3 mt-4">
+      <button class="btn btn-outline-success px-4 py-2" (click)="retakeTest()">
+        🔁 Retake Test
+      </button>
+
+      <button class="btn btn-primary px-4 py-2" (click)="showSummary()">
+        📊 Show Summary
+      </button>
+    </div>
   </div>
 
   <!-- ❌ FAIL UI -->
-<ng-template #failTemplate>
-  <div class="fail-animation-container">
-    <img 
-      src="https://cdn-icons-png.flaticon.com/512/166/166527.png" 
-      alt="Sad Emoji"
-      width="140" 
-      class="mb-4"
-    />
-    <h2 class="text-danger fw-bold animate__animated animate__shakeX">😓 You didn’t pass</h2>
-    <p class="fs-5 text-muted">
-      Your score: <strong>{{ score }}%</strong><br>
-      Minimum required: <strong>80%</strong>
-    </p>
-    <button class="btn btn-outline-danger mt-3 px-4 py-2" (click)="retakeTest()">
-      🔁 Retake Test
-    </button>
-  </div>
-</ng-template>
+  <ng-template #failTemplate>
+    <div class="fail-animation-container text-center">
+      <img src="https://cdn-icons-png.flaticon.com/512/166/166527.png" width="140" class="mb-4" />
+      <h2 class="text-danger fw-bold">😓 You didn’t pass</h2>
+      <p class="fs-5 text-muted">
+        Your score: <strong>{{ score || 0 }}%</strong><br />
+        Minimum required: <strong>80%</strong>
+      </p>
 
+      <div class="d-flex justify-content-center gap-3 mt-4">
+        <button class="btn btn-outline-danger px-4 py-2" (click)="retakeTest()">
+          🔁 Retake Test
+        </button>
 
+        <button class="btn btn-primary px-4 py-2" (click)="showSummary()">
+          📊 Show Summary
+        </button>
+      </div>
+    </div>
+  </ng-template>
 </div>

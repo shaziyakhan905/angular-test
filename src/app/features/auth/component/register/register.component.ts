@@ -94,7 +94,7 @@ export class RegisterComponent implements OnInit {
     this.http.post('createUser', this.registrationForm.value).subscribe({
       next: () => {
         this.natify.showSuccess('Registration successful! Please login.');
-        this.router.navigate(['/home']);
+        this.router.navigate(['/auth/login']);
       },
       error: (err: any) => {
         console.error(err);

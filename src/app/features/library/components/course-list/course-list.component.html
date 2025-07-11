@@ -1,0 +1,40 @@
+<div *ngIf="courses?.length; else noCourses">
+  <div class="list-group">
+
+    <div class="list-group-item list-group-item-action mb-3 shadow-sm border rounded"
+         *ngFor="let course of courses"
+         (click)="selectCourse(course)"
+         style="cursor: pointer;">
+
+      <!-- Title and Controls Row -->
+      <div class="d-flex justify-content-between align-items-center">
+
+        <div>
+          <h5 class="mb-1">{{ course.title }}</h5>
+
+          <small class="text-muted">
+            {{ course.createdAt | date:'medium' }}
+          </small>
+        </div>
+
+        <div *ngIf="canChange" class="btn-group ms-2" (click)="$event.stopPropagation()">
+          <button class="btn btn-sm btn-outline-primary" (click)="edit.emit(course)"><i class="bi bi-pencil me-2"></i></button>
+          <button class="btn btn-sm btn-outline-danger" (click)="delete.emit(course)"><i class="bi bi-trash me-2"></i></button>
+        </div>
+      </div>
+
+      <!-- Description and Meta -->
+       <!-- <div [innerHTML]="course.description"></div> -->
+      <div class="d-flex justify-content-between align-items-center">
+        <small><strong>Category:</strong> {{ course.categoryId?.name }}</small>
+        <span class="badge bg-primary">₹ {{ course.price }}</span>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<ng-template #noCourses>
+  <div class="alert alert-info text-center">No courses available.</div>
+</ng-template>

@@ -1,61 +1,82 @@
 <div class="card shadow-sm rounded-3">
-
   <!-- Header -->
-  <div
-    class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+  <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
     <h5 class="mb-0">Test Management</h5>
 
     <div class="dropdown">
-      <button class="btn btn-sm custom-create-btn dropdown-toggle" type="button"
-        data-bs-toggle="dropdown" aria-expanded="false">
+      <button class="btn btn-success btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
         <i class="bi bi-plus-circle"></i> Create Test
       </button>
       <ul class="dropdown-menu">
-        <li>
-          <a class="dropdown-item" (click)="goToCreateTest()">Create Test</a>
-        </li>
-        <li>
-          <a class="dropdown-item" (click)="openCreateTestModal()">Create Test from Excel</a>
-        </li>
+        <li><a class="dropdown-item" (click)="goToCreateTest()">Create Test</a></li>
+        <li><a class="dropdown-item" (click)="openCreateTestModal()">Create Test from Excel</a></li>
       </ul>
+    </div>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="bg-light p-3 d-flex flex-wrap gap-3 align-items-end border-bottom">
+    <!-- Category Filter -->
+    <div class="form-group mb-0">
+      <label class="form-label fw-semibold">Category:</label>
+      <select class="form-select" [(ngModel)]="selectedCategory" (change)="applyFilters()">
+        <option value="">All</option>
+        <option *ngFor="let cat of categories" [value]="cat.name">{{ cat.name }}</option>
+      </select>
+    </div>
+
+    <!-- Level Filter -->
+    <div class="form-group mb-0">
+      <label class="form-label fw-semibold">Level:</label>
+      <select class="form-select" [(ngModel)]="selectedLevel" (change)="applyFilters()">
+        <option value="">🔍 Filter by Level</option>
+        <option value="Beginner">🟢 Beginner</option>
+        <option value="Intermediate">🟠 Intermediate</option>
+        <option value="Expert">🔴 Expert</option>
+      </select>
+    </div>
+
+    <!-- Reset Button -->
+    <div class="mb-0">
+      <button class="btn btn-secondary mt-4" (click)="resetFilters()">
+        <i class="bi bi-arrow-clockwise"></i> 
+      </button>
     </div>
   </div>
 
   <!-- Loader -->
   <div *ngIf="loading" class="text-center my-4">
-    <div class="spinner-border text-primary" role="status"></div>
+    <div class="spinner-border text-primary"></div>
   </div>
 
   <!-- Table -->
-  <div *ngIf="!loading && tests.length > 0" class="table-responsive">
+  <div *ngIf="!loading && filteredTests.length > 0" class="table-responsive">
     <table class="table table-bordered table-hover">
       <thead class="table-light">
         <tr>
           <th>SNo</th>
           <th>Title</th>
           <th>Category</th>
+          <th>Level</th>
           <th>Total Questions</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr
-          *ngFor="let test of tests | paginate: { itemsPerPage: limit, currentPage: page }; let i = index">
+        <tr *ngFor="let test of filteredTests | paginate: { itemsPerPage: limit, currentPage: page }; let i = index">
           <td>{{ (page - 1) * limit + i + 1 }}</td>
           <td>{{ test.title }}</td>
           <td>{{ test.category }}</td>
+          <td>{{ test.level }}</td>
           <td>{{ test.questions?.length }}</td>
           <td>
-            <button class="btn btn-sm btn-info me-1"
-              (click)="viewTest(test._id)">
+            <button class="btn btn-sm btn-info me-1" (click)="viewTest(test._id)">
               <i class="bi bi-eye"></i>
             </button>
-            <button class="btn btn-sm btn-warning me-1"
-              (click)="updateTest(test._id)">
+            <button class="btn btn-sm btn-warning me-1" (click)="updateTest(test._id)">
               <i class="bi bi-pencil"></i>
             </button>
-            <button class="btn btn-sm btn-danger"
-              (click)="deleteTest(test._id)">
+            <button class="btn btn-sm btn-danger" (click)="deleteTest(test._id)">
               <i class="bi bi-trash"></i>
             </button>
           </td>
@@ -64,60 +85,13 @@
     </table>
   </div>
 
-  <!-- No Data Message -->
-  <div *ngIf="!loading && tests.length === 0"
-    class="alert alert-info text-center">
-    No tests available.
+  <!-- No Data -->
+  <div *ngIf="!loading && filteredTests.length === 0" class="alert alert-info text-center">
+    No tests found matching the selected filters.
   </div>
 
-  <!-- Pagination Controls -->
-  <div class="d-flex justify-content-center mt-3" *ngIf="tests.length > limit">
+  <!-- Pagination -->
+  <div class="d-flex justify-content-center mt-3" *ngIf="filteredTests.length > limit">
     <pagination-controls (pageChange)="page = $event"></pagination-controls>
   </div>
-
 </div>
-
-<!-- ng-bootstrap Modal Template -->
-<ng-template #createTestModal let-modal>
-  <div class="modal-header">
-    <h5 class="modal-title">
-      Create Test From Excel
-    </h5>
-    <button type="button" class="btn-close" aria-label="Close"
-      (click)="modal.dismiss()"></button>
-  </div>
-
-  <div class="modal-body">
-    <form [formGroup]="testForm" (ngSubmit)="createTest()">
-       <div class="mb-3">
-        <label class="form-label fw-bold">Test Title</label>
-        <input type="text" formControlName="title" class="form-control" placeholder="Enter test title">
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label fw-bold">Test Description</label>
-        <textarea formControlName="description" class="form-control"
-          placeholder="Enter test description" rows="3"></textarea>
-        <div class="form-text">Provide a brief description of the test.</div>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label fw-bold">Category</label>
-        <select formControlName="category" class="form-select">
-          <option value="" disabled selected>Select Category</option>
-          <option *ngFor="let cat of categories" [value]="cat._id">{{ cat.name }}</option>
-        </select>
-      </div>
-      <div class="mb-3">
-        <label class="form-label fw-bold">Select Questions</label>
-         <input type="file" required class="form-control" (change)="onFileSelected($event)" accept=".xlsx, .xls">
-      </div>
-
-      <div class="mb-3">
-        <button type="submit" class="btn btn-primary" [disabled]="testForm.invalid">Save</button>
-      </div>
-    </form>
-
-  </div>
-
-</ng-template>

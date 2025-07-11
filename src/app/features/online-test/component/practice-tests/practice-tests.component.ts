@@ -8,47 +8,56 @@ import { CommonHttpService } from 'src/app/services/common-http.service';
   styleUrls: ['./practice-tests.component.scss']
 })
 export class PracticeTestsComponent implements OnInit {
-  tests: any[] = [];
+ tests: any[] = [];
+  filteredTests: any[] = [];
+  categories: any[] = [];
   paginatedTests: any[] = [];
-completedTestIds: string[] = [];
-  currentPage: number = 1;
-  pageSize: number = 6;
-Math: any;
-totalPages: any;
 
-  constructor(private commonHttpService: CommonHttpService, private router: Router) {}
+  selectedCategory: string = '';
+  selectedLevel: string = '';
+  levels: string[] = ['Beginner', 'Intermediate', 'Expert'];
+  page: number = 1;
+
+  constructor(private http: CommonHttpService, private router: Router) {}
 
   ngOnInit(): void {
-
-    this.fetchTests();
-  this.completedTestIds = JSON.parse(localStorage.getItem('test/completedTests') || '[]');
-   
+    this.getAllTests();
+    this.getAllCategories();
   }
 
-  fetchTests(){
- this.commonHttpService.get('test').subscribe((res: any) => {
+  getAllTests() {
+    this.http.get('test').subscribe((res: any) => {
       this.tests = res.data;
-      this.updatePagination();
+      this.filterTests(); // Apply filter initially
     });
   }
 
-  isTestCompleted(testId: string): boolean {
-  return this.completedTestIds.includes(testId);
-}
-  updatePagination(): void {
-    const start = (this.currentPage - 1) * this.pageSize;
-    const end = start + this.pageSize;
-    this.paginatedTests = this.tests.slice(start, end);
+  getAllCategories() {
+    this.http.get('test/getAllCategories').subscribe((res: any) => {
+      this.categories = res.data;
+    });
   }
 
-  changePage(page: number): void {
-    if (page < 1 || page > Math.ceil(this.tests.length / this.pageSize)) return;
-    this.currentPage = page;
-    this.updatePagination();
+ filterTests(): void {
+  this.page = 1;
+  this.filteredTests = this.tests.filter(test => {
+    const matchCategory = this.selectedCategory
+      ? test.category === this.selectedCategory // ✅ FIXED here
+      : true;
+    const matchLevel = this.selectedLevel
+      ? test.level === this.selectedLevel
+      : true;
+    return matchCategory && matchLevel;
+  });
+}
+  resetFilters(): void {
+    this.selectedCategory = '';
+    this.selectedLevel = '';
+    this.filterTests();
   }
 
   startTest(testId: string): void {
-    this.router.navigate(['/online-test/test-page'], {
+    this.router.navigate(['/dashboard/test/online-test/test-page'], {
       queryParams: { testId }
     });
   }

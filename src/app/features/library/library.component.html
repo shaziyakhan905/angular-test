@@ -1,0 +1,70 @@
+<div class="container-fluid g-0">
+  <div class="row g-0 min-vh-100">
+    
+    <!-- Sidebar: Offcanvas for mobile, fixed for desktop -->
+    <div class="d-none d-lg-block col-auto bg-white border-end shadow-sm" style="width: 300px;">
+      <app-category-sidebar
+        [canChange]="canChange"
+        [categoryTree]="categoryTree"
+        (categorySelected)="selectCategory($event)">
+      </app-category-sidebar>
+    </div>
+
+    <!-- Offcanvas Sidebar for mobile -->
+    <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="mobileSidebar">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title">Categories</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+      </div>
+      <div class="offcanvas-body p-0">
+        <app-category-sidebar
+          [categoryTree]="categoryTree"
+          (categorySelected)="selectCategory($event)">
+        </app-category-sidebar>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col bg-light">
+      <div class="d-flex flex-column h-100 p-3 p-md-4">
+
+        <!-- Toggle Button: Only on Mobile -->
+        <div class="d-lg-none mb-3">
+          <button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar">
+            <i class="bi bi-list"></i> Categories
+          </button>
+        </div>
+
+        <!-- Hero Section -->
+        <div class="bg-white rounded-3 p-4 shadow-sm mb-4">
+          <h2 class="fw-bold mb-2">Welcome to EduSphere</h2>
+          <p class="text-muted mb-0">Browse our curated collection of high-quality courses and start learning something new today!</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="row mb-4">
+          <div class="col-md-4 mb-3 mb-md-0">
+            <div class="bg-white rounded-3 p-3 text-center shadow-sm h-100">
+              <h3 class="fw-bold mb-0">120+</h3>
+              <p class="text-muted mb-0">Courses Available</p>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3 mb-md-0">
+            <div class="bg-white rounded-3 p-3 text-center shadow-sm h-100">
+              <h3 class="fw-bold mb-0">40+</h3>
+              <p class="text-muted mb-0">Expert Instructors</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="bg-white rounded-3 p-3 text-center shadow-sm h-100">
+              <h3 class="fw-bold mb-0">5K+</h3>
+              <p class="text-muted mb-0">Learners Enrolled</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

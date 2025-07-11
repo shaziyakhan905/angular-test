@@ -1,0 +1,31 @@
+<div class="container py-4">
+  <h2 class="mb-4 text-center">📋 Test Summary</h2>
+
+  <div *ngFor="let detail of summaryDetails; let i = index" class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">{{ i + 1 }}. {{ detail.questionText }}</h5>
+      <pre *ngIf="detail.questionContent" class="bg-light p-2 rounded">{{ detail.questionContent }}</pre>
+      <ul class="list-group">
+        <li *ngFor="let option of detail.options; let idx = index"
+            class="list-group-item"
+            [ngClass]="{
+              'list-group-item-success': isCorrect(idx, detail),
+              'list-group-item-danger': !isCorrect(idx, detail) && isUserSelected(idx, detail)
+            }">
+          {{ option }}
+        </li>
+      </ul>
+      <div class="mt-2">
+        <span *ngIf="detail.isCorrect" class="badge bg-success">✅ Correct</span>
+        <span *ngIf="!detail.isCorrect" class="badge bg-danger">❌ Incorrect</span>
+      </div>
+      
+
+    </div>
+  </div>
+  <div class="text-end mb-3">
+  <button class="btn btn-outline-secondary" (click)="goBack()">
+    ← Back to Result
+  </button>
+</div>
+</div>

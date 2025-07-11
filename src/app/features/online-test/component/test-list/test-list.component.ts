@@ -10,11 +10,13 @@ import { CommonHttpService } from 'src/app/services/common-http.service';
 })
 export class TestListComponent implements OnInit {
  tests: any[] = [];
+  filteredTests: any[] = [];
+  selectedLevel: string = '';
 
   constructor(
     private route: ActivatedRoute,
     private http: CommonHttpService,
-    private router:Router
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -25,17 +27,34 @@ export class TestListComponent implements OnInit {
       }
     });
   }
+  
 
   fetchTestsByCategory(categoryId: string) {
     this.http.get(`test/alltestWithCategaries/${categoryId}`).subscribe((res: any) => {
       this.tests = res.data;
+      this.filteredTests = [...this.tests]; // default to all
     });
   }
 
+  filterTestsByLevel() {
+    if (this.selectedLevel) {
+      this.filteredTests = this.tests.filter(
+        test => test.level?.toLowerCase() === this.selectedLevel.toLowerCase()
+      );
+    } else {
+      this.filteredTests = [...this.tests];
+    }
+  }
+
+  resetLevelFilter() {
+    this.selectedLevel = '';
+    this.filteredTests = [...this.tests];
+  }
+
   goToTest(testId: string): void {
-  this.router.navigate(['/online-test/test-page'], {
-    queryParams: { testId }
-  });
-}
+    this.router.navigate(['/dashboard/test/online-test/test-page'], {
+      queryParams: { testId }
+    });
+  }
 
 }

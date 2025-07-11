@@ -29,6 +29,7 @@ export class CreateTestComponent implements OnInit {
       title: ['', Validators.required],
       description: ['', Validators.required],
       category: ['', Validators.required],
+        level: ['', Validators.required],
       questions: this.fb.array([])
     });
 
@@ -127,7 +128,8 @@ export class CreateTestComponent implements OnInit {
         this.testForm.patchValue({
           title: test?.title,
           description: test?.description || '',
-          category: test.category?._id || ''
+          category: test.category?._id || '',
+          level: test.level || ''
         });
 
         // Clear existing questions if any
@@ -146,7 +148,7 @@ export class CreateTestComponent implements OnInit {
       error: (err) => {
         console.error(err);
         this.notify.showError('Failed to load test details');
-        this.router.navigate(['/test-management']);
+        this.router.navigate(['/dashboard/test/test-management']);
       }
     });
   }
@@ -186,7 +188,7 @@ export class CreateTestComponent implements OnInit {
     this.http.post('test/createTest', payload).subscribe({
       next: () => {
         this.notify.showSuccess('Test Created Successfully');
-        this.router.navigate(['/test-management']);
+        this.router.navigate(['/dashboard/test/test-management']);
       },
       error: (err) => console.error(err)
     });
@@ -196,7 +198,7 @@ export class CreateTestComponent implements OnInit {
     this.http.put(`test/updateTest/${this.testId}`, payload).subscribe({
       next: () => {
         this.notify.showSuccess('Test Updated Successfully');
-        this.router.navigate(['/test-management']);
+        this.router.navigate(['/dashboard/test/test-management']);
       },
       error: (err) => console.error(err)
     });

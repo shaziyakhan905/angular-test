@@ -54,7 +54,7 @@ export class HeaderComponent implements OnInit {
   }
 
   navigateToProfile(): void {
-    this.router.navigate(['/auth/profile']);
+    this.router.navigate(['/dashboard/test/profile']);
     this.showDropdown = false;
   }
 
