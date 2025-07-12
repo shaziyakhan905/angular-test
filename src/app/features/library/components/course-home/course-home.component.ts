@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AuthService } from 'src/app/services/auth.service';
 import { CommonHttpService } from 'src/app/services/common-http.service';
 
 @Component({
@@ -25,15 +24,20 @@ export class CourseHomeComponent implements OnInit {
   isCourseIsInViewMode: boolean = false;
   courseViewMode: string = "";
   canChange: boolean = false;
-  isLoggedIn: boolean = false;
+  selectedCategoryId:string = "";
   constructor(
     private aRoute: ActivatedRoute,
     private commonHttp: CommonHttpService,
     private modalService: NgbModal,
-    private router: Router,
-    private authService: AuthService
+    private router: Router
   ) {
-    this.getRole();
+    const userRole = this.aRoute.snapshot.data['role'];
+    if (userRole === 'admin') {
+      this.canChange = true;
+    } else if (userRole === 'user') {
+      this.canChange = false;
+    }
+
     this.aRoute.params.subscribe((params: Params) => {
       const categoryId = params['categoryId'];
       if (categoryId) {
@@ -50,27 +54,13 @@ export class CourseHomeComponent implements OnInit {
 
     this.aRoute.queryParams.subscribe((qparams: any) => {
       if ('categoryId' in qparams) {
+        this.selectedCategoryId = qparams?.categoryId;
         this.getCoursesByCategoryId(qparams?.categoryId);
       }
-    });
-
-    this.authService.isAuthenticated$.subscribe(status => {
-      this.isLoggedIn = status;
     });
   }
 
   ngOnInit(): void { }
-
-
-  getRole() {
-    this.authService.userRole$.subscribe((role: any) => {
-      if (role != null) {
-        if (role === 'admin') {
-          this.canChange = true;
-        }
-      }
-    });
-  }
 
   get getCategoryName(): string {
     return this.selectedCategory?.name || this.courseModalData?.categoryId?.name || '';
@@ -118,7 +108,7 @@ export class CourseHomeComponent implements OnInit {
     this.commonHttp.get(`library/categories/${parentCatId}/tree`).subscribe({
       next: (response: any) => {
         this.categoryTree = Array.isArray(response) ? response : [response];
-        this.setParentReference(this.categoryTree); // Set parent links
+        // this.setParentReference(this.categoryTree); // Set parent links
       },
       error: (err) => console.error(err)
     });
@@ -189,9 +179,6 @@ export class CourseHomeComponent implements OnInit {
   }
 
   viewCourse(course: any): void {
-    if (!this.isLoggedIn) {
-      this.authService.logout();
-    }
     this.selectedCourse = course;
     this.courseViewMode = "view";
   }
@@ -232,6 +219,28 @@ export class CourseHomeComponent implements OnInit {
         error: (err) => console.error(err)
       });
     }
+  }
+
+  onSearch(searchText: string): void {
+    this.searchCourses(searchText); // your search function
+  }
+
+  onClearSearch(): void {
+    this.getCoursesByCategoryId(this.selectedCategoryId);
+  }
+
+  searchCourses(searchText: string): void {
+    const categoryId = this.categoryTree[0]?._id;
+
+    if (!categoryId) return;
+
+    this.commonHttp.get(`library/courses/searchByCategory/${categoryId}?searchText=${searchText}`)
+      .subscribe({
+        next: (courses: any) => {
+          this.courses = courses;
+        },
+        error: (err) => {console.error(err)}
+      });
   }
 
   navigateToLibraryHomePage() {

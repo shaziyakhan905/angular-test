@@ -1,0 +1,16 @@
+<div class="input-group">
+  <input
+    type="text"
+    class="form-control"
+    [placeholder]="placeholder"
+    [formControl]="searchControl"
+  />
+  <button
+    type="button"
+    class="btn btn-outline-secondary"
+    *ngIf="searchControl.value"
+    (click)="clear()"
+  >
+    ✕
+  </button>
+</div>

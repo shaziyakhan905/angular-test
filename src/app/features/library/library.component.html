@@ -1,19 +1,21 @@
 <div class="container-fluid g-0">
   <div class="row g-0 min-vh-100">
-    
-    <!-- Sidebar: Offcanvas for mobile, fixed for desktop -->
-    <div class="d-none d-lg-block col-auto bg-white border-end shadow-sm" style="width: 300px;">
-      <app-category-sidebar
-        [canChange]="canChange"
-        [categoryTree]="categoryTree"
-        (categorySelected)="selectCategory($event)">
-      </app-category-sidebar>
+
+    <!-- Desktop Sidebar -->
+    <div class="d-none d-lg-block col-auto bg-white shadow-sm border-end" style="width: 280px;">
+      <div class="position-sticky top-0 vh-100 overflow-auto p-3">
+        <app-category-sidebar
+          [canChange]="canChange"
+          [categoryTree]="categoryTree"
+          (categorySelected)="selectCategory($event)">
+        </app-category-sidebar>
+      </div>
     </div>
 
-    <!-- Offcanvas Sidebar for mobile -->
+    <!-- Mobile Sidebar (Offcanvas) -->
     <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="mobileSidebar">
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title">Categories</h5>
+      <div class="offcanvas-header border-bottom">
+        <h5 class="offcanvas-title fw-semibold">📚 Categories</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
       </div>
       <div class="offcanvas-body p-0">
@@ -28,40 +30,95 @@
     <div class="col bg-light">
       <div class="d-flex flex-column h-100 p-3 p-md-4">
 
-        <!-- Toggle Button: Only on Mobile -->
+        <!-- Mobile Toggle Button -->
         <div class="d-lg-none mb-3">
-          <button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar">
-            <i class="bi bi-list"></i> Categories
+          <button class="btn btn-primary w-100 shadow-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar">
+            <i class="bi bi-list me-2"></i> Browse Categories
           </button>
         </div>
 
         <!-- Hero Section -->
-        <div class="bg-white rounded-3 p-4 shadow-sm mb-4">
-          <h2 class="fw-bold mb-2">Welcome to EduSphere</h2>
-          <p class="text-muted mb-0">Browse our curated collection of high-quality courses and start learning something new today!</p>
-        </div>
+<section class="p-4 rounded-4 shadow-sm mb-4 text-white"
+         style="background: linear-gradient(135deg, #4f46e5, #3b82f6);">
+  <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 text-center text-md-start">
+    
+    <!-- Text Content -->
+    <div class="flex-grow-1">
+      <h2 class="fw-bold mb-2 fs-3 fs-md-2">
+        🎓 Your Future of Learning Starts <span class="text-warning">Here</span>
+      </h2>
+      <p class="mb-0 fs-6 text-light">
+        Unlock your potential, gain real-world skills, and boost your <span class="fw-semibold">career</span> with high-quality expert-led courses.
+      </p>
+    </div>
 
-        <!-- Stats -->
-        <div class="row mb-4">
-          <div class="col-md-4 mb-3 mb-md-0">
-            <div class="bg-white rounded-3 p-3 text-center shadow-sm h-100">
-              <h3 class="fw-bold mb-0">120+</h3>
+    <!-- Optional Image or Icon -->
+    <div class="d-none d-md-block">
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135768.png" alt="Learning Icon" width="100" height="100">
+    </div>
+  </div>
+</section>
+        <!-- Stats Section -->
+        <section class="row g-4">
+          <div class="col-12 col-sm-6 col-md-4">
+            <div class="stat-card bg-white p-4 rounded-4 shadow-sm text-center h-100 hover-scale">
+              <h3 class="fw-bold text-primary mb-2">120+</h3>
               <p class="text-muted mb-0">Courses Available</p>
             </div>
           </div>
-          <div class="col-md-4 mb-3 mb-md-0">
-            <div class="bg-white rounded-3 p-3 text-center shadow-sm h-100">
-              <h3 class="fw-bold mb-0">40+</h3>
+          <div class="col-12 col-sm-6 col-md-4">
+            <div class="stat-card bg-white p-4 rounded-4 shadow-sm text-center h-100 hover-scale">
+              <h3 class="fw-bold text-success mb-2">40+</h3>
               <p class="text-muted mb-0">Expert Instructors</p>
             </div>
           </div>
-          <div class="col-md-4">
-            <div class="bg-white rounded-3 p-3 text-center shadow-sm h-100">
-              <h3 class="fw-bold mb-0">5K+</h3>
+          <div class="col-12 col-sm-12 col-md-4">
+            <div class="stat-card bg-white p-4 rounded-4 shadow-sm text-center h-100 hover-scale">
+              <h3 class="fw-bold text-warning mb-2">5K+</h3>
               <p class="text-muted mb-0">Learners Enrolled</p>
             </div>
           </div>
-        </div>
+        </section>
+
+        <!-- Highlights / Features Section -->
+<section class="my-5">
+  <div class="row g-4 text-center">
+
+    <div class="col-sm-6 col-lg-3">
+      <div class="bg-white p-4 rounded-4 shadow-sm h-100">
+        <i class="bi bi-award-fill fs-1 text-primary mb-3"></i>
+        <h6 class="fw-semibold mb-2">Certified Learning</h6>
+        <p class="text-muted small">Industry-recognized certification on course completion.</p>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <div class="bg-white p-4 rounded-4 shadow-sm h-100">
+        <i class="bi bi-globe2 fs-1 text-success mb-3"></i>
+        <h6 class="fw-semibold mb-2">Global Access</h6>
+        <p class="text-muted small">Access courses from anywhere, anytime on any device.</p>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <div class="bg-white p-4 rounded-4 shadow-sm h-100">
+        <i class="bi bi-person-video3 fs-1 text-warning mb-3"></i>
+        <h6 class="fw-semibold mb-2">Live Sessions</h6>
+        <p class="text-muted small">Interactive live sessions with top instructors weekly.</p>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <div class="bg-white p-4 rounded-4 shadow-sm h-100">
+        <i class="bi bi-people-fill fs-1 text-danger mb-3"></i>
+        <h6 class="fw-semibold mb-2">Community Support</h6>
+        <p class="text-muted small">Join our learner community to ask questions & grow.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 
       </div>
     </div>

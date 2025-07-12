@@ -2,18 +2,43 @@
 
     <div class="row g-0 min-vh-100">
 
-        <!-- Sidebar: Category Tree -->
-        <div class="col-auto bg-white border-end" style="width: 300px;">
-            <app-category-sidebar 
-                [categoryTree]="categoryTree"
-                [canChange]="canChange"
+        <!-- Sidebar: Offcanvas for mobile, fixed for desktop -->
+        <div class="d-none d-lg-block col-auto bg-white border-end shadow-sm" style="width: 300px;">
+            <app-category-sidebar [categoryTree]="categoryTree" [canChange]="canChange"
                 (categorySelected)="selectCategory($event)">
             </app-category-sidebar>
         </div>
 
+        <!-- Offcanvas Sidebar for mobile -->
+        <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="mobileSidebar">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title">Categories</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body p-0">
+                <app-category-sidebar [categoryTree]="categoryTree" [canChange]="canChange"
+                    (categorySelected)="selectCategory($event)">
+                </app-category-sidebar>
+            </div>
+        </div>
+
+        <!-- Sidebar: Category Tree -->
+        <!-- <div class="col-auto bg-white border-end" style="width: 300px;">
+            <app-category-sidebar [categoryTree]="categoryTree" [canChange]="canChange"
+                (categorySelected)="selectCategory($event)">
+            </app-category-sidebar>
+        </div> -->
+
         <!-- Main Content Area: Courses -->
         <div class="col bg-light">
             <div class="d-flex flex-column h-100">
+                <!-- Toggle Button: Only on Mobile -->
+                <div class="d-lg-none mb-3">
+                    <button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#mobileSidebar">
+                        <i class="bi bi-list"></i> Categories
+                    </button>
+                </div>
                 <div class="p-3 border-bottom bg-white">
                     <div class="d-flex align-items-center justify-content-between">
                         <!-- Left: Breadcrumb -->
@@ -25,8 +50,8 @@
                         </div>
 
                         <!-- Right: Home Button -->
-                        <button type="button" class="btn btn-sm btn-primary"
-                            (click)="navigateToLibraryHomePage()"><i class="bi bi-house-check-fill"></i></button>
+                        <button type="button" class="btn btn-sm btn-primary" (click)="navigateToLibraryHomePage()"><i
+                                class="bi bi-house-check-fill"></i></button>
                     </div>
 
                     <ng-template #noContent>
@@ -36,19 +61,27 @@
 
 
                 <div class="p-3 overflow-auto flex-grow-1">
-                    <div class="d-flex align-items-center mb-1">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <!-- Search Input (Left) -->
+                        <div *ngIf="selectedCategoryId" class="flex-grow-1 me-3">
+                            <app-search-input [placeholder]="'Search Courses...'" [debounceTime]="300" [minLength]="2"
+                                (search)="onSearch($event)" (cleared)="onClearSearch()">
+                            </app-search-input>
+                        </div>
+
+                        <!-- Add Course Button (Right) -->
                         <ng-container *ngIf="selectedCategory && !selectedCategory?.children?.length && canChange">
-                            <button class="btn btn-sm btn-outline-primary ms-auto" (click)="openCourseModal('add')">
+                            <button class="btn btn-sm btn-outline-primary" (click)="openCourseModal('add')">
                                 <i class="bi bi-plus"></i> Add New Course
                             </button>
                         </ng-container>
                     </div>
+
                     <ng-container *ngIf="selectedCategoryHierarchy?.length || courseViewMode !=''; else courseContent"
                         class="text-muted">
                         <ng-container *ngIf="courseViewMode === 'list'">
-                            <app-course-list [canChange]="canChange" [courses]="courses"
-                                (edit)="editCourse($event)" (delete)="deleteCourse($event)"
-                                (view)="viewCourse($event)"></app-course-list>
+                            <app-course-list [canChange]="canChange" [courses]="courses" (edit)="editCourse($event)"
+                                (delete)="deleteCourse($event)" (view)="viewCourse($event)"></app-course-list>
                         </ng-container>
                         <ng-container *ngIf="courseViewMode === 'view'">
                             <app-course-details [course]="selectedCourse"

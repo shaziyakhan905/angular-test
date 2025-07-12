@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { CourseHomeComponent } from './components/course-home/course-home.component';
 import { CategorySidebarComponent } from './components/category-sidebar/category-sidebar.component';
 import { RichTextEditorComponent } from 'src/app/shared/rich-text-editor/rich-text-editor.component';
+import { SearchInputComponent } from 'src/app/shared/search-input/search-input/search-input.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { RichTextEditorComponent } from 'src/app/shared/rich-text-editor/rich-te
     LibraryRoutingModule,
     CategoryChildrenComponent,
     RichTextEditorComponent,
+    SearchInputComponent,
     CourseListComponent,
     CourseDetailsComponent,
     ReactiveFormsModule,

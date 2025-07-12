@@ -13,6 +13,7 @@ import { CommonHttpService } from 'src/app/services/common-http.service';
 export class LibraryComponent {
   categoryTree: any[] = [];
   canChange:boolean = false;
+  
   constructor(
     private commonHttp: CommonHttpService,
     private router: Router,
