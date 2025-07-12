@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AuthService } from 'src/app/services/auth.service';
 import { CommonHttpService } from 'src/app/services/common-http.service';
 
 @Component({
@@ -29,15 +30,11 @@ export class CourseHomeComponent implements OnInit {
     private aRoute: ActivatedRoute,
     private commonHttp: CommonHttpService,
     private modalService: NgbModal,
-    private router: Router
+    private router: Router,
+    private authService:AuthService
   ) {
-    const userRole = this.aRoute.snapshot.data['role'];
-    if (userRole === 'admin') {
-      this.canChange = true;
-    } else if (userRole === 'user') {
-      this.canChange = false;
-    }
 
+    this.getRole();
     this.aRoute.params.subscribe((params: Params) => {
       const categoryId = params['categoryId'];
       if (categoryId) {
@@ -64,6 +61,16 @@ export class CourseHomeComponent implements OnInit {
 
   get getCategoryName(): string {
     return this.selectedCategory?.name || this.courseModalData?.categoryId?.name || '';
+  }
+
+      getRole() {
+    this.authService.userRole$.subscribe((role: any) => {
+      if (role != null) {
+        if (role === 'admin') {
+          this.canChange = true;
+        }
+      }
+    });
   }
 
   findCategoryById(tree: any[], categoryId: string): any {
